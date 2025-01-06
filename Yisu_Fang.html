@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope&display=swap" rel="stylesheet">
+<style>
+  /* Reset, body & global layout */
+  /* ------------------------------------------------------------- */
+  html, body {
+    margin: 0; 
+    padding: 0; 
+    height: 100%;
+    background-color: #000;
+    color: #fff;
+    font-family: Manrope, system-ui, -apple-system, sans-serif;
+  }
+
+  /* Make a container that sits below the fixed header */
+  /* This container holds left-view and right-view side by side */
+  .main-container {
+    display: flex; 
+    width: 100%;
+    margin-top: 80px; /* Space for the fixed header so content isn't hidden by header */
+  }
+
+  /* Header bar (fixed) at top */
+  /* ------------------------------------------------------------- */
+  .header-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    background-color: #333; 
+    color: #fff;
+    padding: 15px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+
+    /* Put <h2> and <p> on the same line using flex */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+	.header-bar h2{
+		font-family: Poppins;
+		margin: 0;
+	}
+  .header-bar p {
+    margin: 0;
+  }
+
+  /* Left view (news tiles) */
+  /* ------------------------------------------------------------- */
+  .left-view {
+    /* 80% so the right-view’s 20% takes the rest, no gaps */
+    width: 64%;
+    padding: 20px;
+    border-right: 1px solid #333; /* Divider */
+    box-sizing: border-box;
+    overflow-y: auto;
+    height: calc(100vh - 80px);  /* Full height minus header */
+  }
+
+  /* Right view (article reader) */
+  /* ------------------------------------------------------------- */
+  .right-view {
+    width: 36%; /* Right section width */
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    background-color: #000000;
+    color: #ddd;
+    height: calc(100vh - 80px); /* Full height minus header */
+  }
+
+  /* FLEX-WRAP container for the news tiles */
+  /* ------------------------------------------------------------- */
+  .news-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px; /* Space between tiles */
+    justify-content: flex-start; /* Aligns tiles to the left */
+  }
+
+  /* Each news tile */
+  /* ------------------------------------------------------------- */
+  .news-tile {
+    position: relative;
+    box-sizing: border-box;
+    background-color: #1a1a1a;
+    color: white;
+    width: calc((100% - (2 * 24px)) / 3); /* 3 columns for desktop */
+    aspect-ratio: 1 / 1; /* keeps them square */
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    border: 1px solid #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 0px;
+    cursor: pointer;
+    overflow: hidden; /* Important so pseudo-element is clipped inside tile */
+    
+    /* (A) Provide default values for custom props (for the highlight) */
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+  }
+
+  /* (B) Circular highlight that follows the mouse.
+     We use a pseudo-element that sits "under" the content. */
+  .news-tile::before {
+    content: "";
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    pointer-events: none;       /* So it won't block clicks */
+    transform: translate(-50%, -50%);
+    top: var(--mouse-y);
+    left: var(--mouse-x);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  /* Show the circular highlight on hover */
+  .news-tile:hover::before {
+    opacity: 1;
+  }
+
+  /* (C) Click effect: invert color when active (and stay that way) */
+  .news-tile.active {
+    filter: invert(1);
+    transition: filter 0.4s ease;
+  }
+
+  /* (D) Font details in the tile */
+  .font-pair {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 16px;
+  }
+
+  .star-icon {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    color: #666;
+  }
+
+  .headline {
+    font-family: Poppins;
+    font-size: 32px;
+    font-weight: normal;
+	  letter-spacing: -0.03em;
+    margin-bottom: 8px; 
+    line-height: 1.2;
+  }
+
+  /* 
+     No more line-clamping. We'll just let it fill the leftover space in the tile
+     and hide the overflow (natural truncation). 
+  */
+  .content {
+    font-family: Manrope, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #ddd;
+
+    /* Let content fill remaining vertical space, then clip the overflow */
+    flex: 1;
+    overflow: hidden; 
+    text-overflow: ellipsis; /* only visually applies on single line, but safe to include */
+  }
+
+  .article-reader {
+    font-family: Manrope, sans-serif;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  /* Responsive adjustments: Tablet -> 2 columns, Mobile -> 1 column */
+  /* ------------------------------------------------------------- */
+  @media (max-width: 768px) {
+    .left-view {
+      width: 100%;
+      border-right: none;
+    }
+    .right-view {
+      display: none; /* Hide reader on smaller screens if desired */
+    }
+    .news-tile {
+      width: calc((100% - 24px) / 2);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .news-tile {
+      width: 100%;
+    }
+  }
+	/* 1) Hide the entire page’s scrollbar */
+html, body {
+  overflow: hidden; /* Ensures no scrolling on the page */
+}
+
+/* 2) Your existing header-bar (80px tall) remains fixed at top 
+   (You likely already have something like this):
+.header-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;         /* or whatever your header height is */
+  z-index: 9999;
+  background-color: #333; 
+  /* ... plus any additional styling */
+}
+*/
+
+/* 3) Reconfigure main-container: 
+      - Absolutely positioned below the fixed header 
+      - Fill remaining space with no scroll of its own
+      - Keep display:flex for side-by-side layout
+*/
+.main-container {
+  position: absolute;
+  top: 80px;                /* match header’s height */
+  left: 0;
+  width: 100%;
+  height: calc(100% - 80px);/* fill leftover vertical space */
+  display: flex;
+  overflow: hidden;         /* no scrollbar for the container itself */
+  /* remove margin-top: 80px if you had it */
+}
+
+/* 4) Let left-view and right-view scroll individually */
+.left-view {              /* or however you want to divide it */
+  height: 100%;
+  overflow-y: auto;         /* separate scrollbar */
+  /* any additional styling, e.g. padding, border-right, etc. */
+}
+
+.right-view {
+  height: 100%;
+  overflow-y: auto;         /* separate scrollbar */
+  /* any additional styling, e.g. padding, background-color, etc. */
+}
+
+</style>
+
+<script>
+function handleTileClick(tile) {
+  // 1) Remove "active" from all tiles so only the newly clicked tile is inverted
+  const allTiles = document.querySelectorAll(".news-tile");
+  allTiles.forEach(t => t.classList.remove("active"));
+
+  // 2) Add "active" to the clicked tile
+  tile.classList.add("active");
+
+  // 3) Show the full text in the right view
+  const fullTextElement = tile.querySelector('.content');
+  const fullText = fullTextElement.innerHTML;
+  const reader = document.querySelector(".right-view");
+  reader.innerHTML = `<div class='article-reader'>${fullText}</div>`;
+}
+
+// For the circular highlight, track mousemove inside each tile
+function attachMouseMoveListeners() {
+  const tiles = document.querySelectorAll(".news-tile");
+  tiles.forEach(tile => {
+    tile.addEventListener("mousemove", (e) => {
+      const rect = tile.getBoundingClientRect();
+      // compute x,y relative to the tile
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      // update the custom properties (used by .news-tile::before)
+      tile.style.setProperty("--mouse-x", x + "px");
+      tile.style.setProperty("--mouse-y", y + "px");
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", attachMouseMoveListeners);
+</script>
+</head>
+<body>
+
+  <!-- Fixed header bar -->
+  <div class="header-bar">
+    <p>This informative content is brought forth by our generous sponsor</p> 
+    <h2>Yisu Fang</h2>
+  </div>
+
+  <!-- Main container below the fixed header, holding left and right views -->
+  <div class="main-container">
+
+    <div class="left-view">
+      <div class="news-grid">
+        
+        <!-- 1) SINGLE PLACE for the text: .content is truncated by natural 
+                overflow (no line clamp), but the full text is shown on click. -->
+        <div class="news-tile" onclick="handleTileClick(this)">
+          <div class="font-pair">Personal Statement</div>
+          <div class="star-icon">★</div>
+          <h2 class="headline">Meet the Man Behind His Own Website</h2>
+          <p class="content">
+            I am born, O goddess of the blue eyes, of barbarian parents, among the good and virtuous 
+            Cimmerians who dwell by the shore of a melancholy sea, bristling with rocks ever lashed 
+            by the storm. The sun is scarcely known in this country, its flowers are seaweed, marine 
+            plants, and the coloured shells which are gathered in the recesses of lonely bays. 
+            The clouds seem colourless, and even joy is rather sorrowful there; 
+            but fountains of fresh water spring out of the rocks...
+          </p>
+        </div>
+
+        <div class="news-tile" onclick="handleTileClick(this)">
+          <div class="font-pair">Education</div>
+          <div class="star-icon">★</div>
+          <h2 class="headline">First Class Engineer-<br>ing Degree</h2>
+          <p class="content">
+            ARMS and the Heroes, who from Lisbon's shore,
+            Thro' seas where sail was never spread before,
+            Beyond where Ceylon lifts her spicy breast,
+            And waves her woods above the watery waste,
+            With prowess more than human forc'd their way
+            To the fair kingdoms of the rising day...
+          </p>
+        </div>
+
+        <div class="news-tile" onclick="handleTileClick(this)">
+          <div class="font-pair">Publication</div>
+          <div class="star-icon">★</div>
+          <h2 class="headline">Sequel to My First IEEE Conference: My Second IEEE Conference</h2>
+          <p class="content">
+This scene from the north wall of Medinet Habu is often used to illustrate the Egyptian campaign against the Sea Peoples, in what has come to be known as the Battle of the Delta (c. 1175 BC), during the reign of Ramesses III. While accompanying hieroglyphs do not name Egypt's enemies, describing them simply as being from "northern countries", early scholars noted the similarities between the hairstyles and accessories worn by the combatants and other reliefs in which such groups are named.
+          </p>
+        </div>
+
+        <div class="news-tile" onclick="handleTileClick(this)">
+          <div class="font-pair">Roboto Bold + Lato Regular</div>
+          <div class="star-icon">★</div>
+          <h2 class="headline">Tile 4</h2>
+          <p class="content">
+            Content 4
+          </p>
+        </div>
+
+        <div class="news-tile" onclick="handleTileClick(this)">
+          <div class="font-pair">Contact Me</div>
+          <div class="star-icon">★</div>
+          <h2 class="headline">Get a Limited Copy of My CV Today For Free</h2>
+          <p class="content">
+            Content 5
+          </p>
+        </div>
+
+      </div><!-- .news-grid -->
+    </div><!-- .left-view -->
+
+    <div class="right-view">
+      <div class="article-reader">
+        Click a tile to view detailed content.
+      </div>
+    </div><!-- .right-view -->
+
+  </div><!-- .main-container -->
+</body>
+</html>
