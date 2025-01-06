@@ -136,6 +136,28 @@
     filter: invert(1);
     transition: filter 0.4s ease;
   }
+/* In your existing .news-tile block, 
+   set a base font-size using viewport-relative or clamp. */
+.news-tile {
+  /* existing styles omitted for brevity... */
+
+  /* Example 1: Use vw so font scales with viewport width */
+  /* font-size: 1.2vw; */
+
+  /* Example 2: Use clamp() to keep it readable on very small or very large screens */
+  font-size: clamp(0.6rem, 1vw, 1rem);
+}
+
+/* Then, inside the tile, use em, so it scales relative to .news-tile's font-size */
+.news-tile .headline {
+  font-family: Poppins, sans-serif;
+  /* Example: 2em means "2 × parent tile’s font-size" */
+  font-size: 2em;
+  font-weight: normal;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px; 
+  line-height: 1.1;
+}
 
   /* (D) Font details in the tile */
   .font-pair {
