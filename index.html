@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Accent Tincture Demo</title>
+  <title>Yisu Fang :: Portfolio</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,449 +10,483 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Manrope&display=swap" rel="stylesheet">
 
-  <style>
-    :root {
-      /* Change this to your favorite accent color! */
-      --accent-color: #e1eacd; 
-    }
+<style>
+  /* =======================================
+     1. GLOBAL VARIABLES & BASE STYLING
+     ======================================= */
+  :root {
+    /* Change this to your favorite accent color! */
+    --accent-color: #e1eacd; 
+    
+    /* Control how much blur you want across the page. */
+    --blur-value: 12px;
+  }
 
-    /* Reset, body & global layout */
-    /* ------------------------------------------------------------- */
-    html, body {
-      margin: 0; 
-      padding: 0; 
-      height: 100%;
-      background-color: #000;
-      color: #fff;
-      font-family: Manrope, system-ui, -apple-system, sans-serif;
-      overflow: hidden; /* Hide the entire page’s scrollbar */
-    }
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    /* Overall background gradient */
+    background: linear-gradient(135deg, #111, #000);
+    /* Let content scroll if needed; position relative for pseudo-element */
+    position: relative;
+    overflow: auto;
+    color: #fff;
+    font-family: Manrope, system-ui, -apple-system, sans-serif;
+  }
 
-    /* Header bar (fixed) at top */
-    /* ------------------------------------------------------------- */
-    .header-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 5%;
-      z-index: 9999;
-      background-color: #1a1a1a; 
-      color: #fff;
-      padding: 10px 0px;
-      box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+  /* 1c) Big frosted-glass overlay for the entire page */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Dark translucent overlay color */
+    background: rgba(0, 0, 0, 0.5);
+    /* The blur effect */
+    backdrop-filter: blur(var(--blur-value));
+    -webkit-backdrop-filter: blur(var(--blur-value));
+    z-index: -1; /* push behind all content */
+  }
 
-      /* Put <h2> and <p> on the same line using flex */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-    .header-bar h2 {
-      font-family: Poppins;
-      margin: 0;
-    }
-    .header-bar p {
-      margin: 0;
-    }
+  /* ================================
+     2. HEADER (GLASSMORPHISM)
+     ================================ */
+  .header-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* Increased to 60px for a more typical header height */
+    height: 60px;
+    z-index: 9999;
+    /* Glassy background + blur */
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(var(--blur-value));
+    -webkit-backdrop-filter: blur(var(--blur-value));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
-    /* Main container below the fixed header, holding left and right views */
-    /* ------------------------------------------------------------- */
+    /* Flex layout for content alignment */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 16px; /* some horizontal padding */
+    box-sizing: border-box;
+  }
+  .header-bar h2 {
+    font-family: Poppins;
+    margin: 0;
+  }
+  .header-bar p {
+    margin: 0;
+  }
+
+  /* =========================================
+     3. MAIN CONTAINER & FLEX LAYOUT
+     ========================================= */
+  .main-container {
+    position: absolute;
+    /* Move content below the 60px-high header */
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 60px);
+    display: flex;
+    /* Hide horizontal/vertical scroll at container level if desired */
+    overflow: hidden; 
+  }
+
+  /* ================
+     3a) LEFT-VIEW
+     ================ */
+  .left-view {
+    width: 70%;
+    box-sizing: border-box;
+    /* Translucent background + blur for layered glass effect */
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(var(--blur-value));
+    -webkit-backdrop-filter: blur(var(--blur-value));
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+
+    /* If you want more "frosted" behind tiles, you can do:
+       background: linear-gradient(45deg, #333, #000); */
+
+    padding: 40px;
+    overflow-y: auto;
+    overflow-x: auto;
+
+    /* CUSTOM SCROLLBAR (Firefox and WebKit) */
+    /* For Firefox (scrollbar-width + scrollbar-color) */
+    scrollbar-width: thin; /* "auto" or "thin" */
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+
+  }
+  /* For Chrome, Safari, and Edge */
+  .left-view::-webkit-scrollbar {
+    width: 8px; /* Thin width */
+  }
+  .left-view::-webkit-scrollbar-track {
+    background: transparent; /* Invisible track */
+  }
+  .left-view::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+  }
+  .left-view::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  /* ================
+     3b) RIGHT-VIEW
+     ================ */
+  .right-view {
+    width: 30%;
+    box-sizing: border-box;
+    /* Same glassy effect */
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(var(--blur-value));
+    -webkit-backdrop-filter: blur(var(--blur-value));
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+
+    padding: 20px;
+    color: #ddd;
+    overflow-y: auto;
+    overflow-x: auto;
+
+    /* CUSTOM SCROLLBAR for right-view as well */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  }
+  .right-view::-webkit-scrollbar {
+    width: 8px;
+  }
+  .right-view::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .right-view::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+  }
+  .right-view::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  /* Specifically requested override: ensure this text size is 16px */
+  .right-view p {
+    font-family: Manrope;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .right-view h2 {
+    font-family: Poppins;
+    font-size: 32px;
+    line-height: 1.1; 
+    letter-spacing: -0.03em;
+  } 
+
+  /* ================================
+     4. NEWS GRID & TILES
+     ================================ */
+  .news-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: flex-start; 
+  }
+
+  .news-tile {
+    position: relative;
+    box-sizing: border-box;
+    width: calc((100% - (2 * 30px)) / 3); /* 3 columns on desktop */
+    aspect-ratio: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    overflow: hidden;
+
+    /* Glassy tile background & border */
+    background: rgba(26, 26, 26, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    
+    /* If you want to see an accent border: */
+    /* border: 1px solid var(--accent-color); */
+
+    /* Smooth transitions for all hover/active states */
+    transition: all 0.3s ease;
+
+    /* Provide default values for the highlight props */
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+    font-size: clamp(0.6rem, 1vw, 1rem);
+    color: #fff;
+    padding: 24px;
+  }
+
+  /* 4a) Circular highlight that follows the mouse */
+  .news-tile::before {
+    content: "";
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    top: var(--mouse-y);
+    left: var(--mouse-x);
+    border-radius: 50%;
+    /* Adjust gradient to remain subtle on glass */
+    background: radial-gradient(circle, rgba(225, 234, 205, 0.3), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+  }
+  .news-tile:hover::before {
+    opacity: 0.3;
+  }
+
+  /* 4b) ACTIVE (Clicked) tile uses accent background, no filter */
+  .news-tile.active {
+    background-color: var(--accent-color);
+    color: #000; /* ensure text is readable on accent */
+    filter: none; /* remove invert/hue rotate if previously used */
+    transition: background-color 0.4s ease, color 0.4s ease;
+    
+    /* Optional: extra blur if you like */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-color: var(--accent-color);
+  }
+
+  /* Headlines, star icons, fonts */
+  .news-tile .font-pair {
+    font-size: 12px;
+    margin-bottom: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    z-index: 2;
+  }
+  .news-tile .star-icon {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    color: rgba(255, 255, 255, 0.4);
+    z-index: 2;
+  }
+  .news-tile .headline {
+    font-family: Poppins, sans-serif;
+    font-weight: normal;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+    line-height: 1.1;
+    font-size: 2em;
+    z-index: 2;
+  }
+
+  /* Ensure text is readable on glass background */
+  .news-tile .content {
+    position: relative;
+    z-index: 2;
+    font-family: Manrope, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* Make sure any text inside the active tile also goes black */
+  .news-tile.active .content,
+  .news-tile.active .star-icon,
+  .news-tile.active .font-pair,
+  .news-tile.active .headline {
+    color: #000;
+  }
+
+  /* ================
+     4c) Fade/Mask effect near the bottom of the tile content
+     ================ */
+  /* Single blur “overlay” */
+  .news-tile .content::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    pointer-events: none;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.8) 20%,
+      black 50%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.8) 20%,
+      black 50%
+    );
+  }
+
+  /* Remove color-based gradient, rely on opacity only in main content */
+  .news-tile .content {
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      black 10%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      black 10%,
+      transparent 100%
+    );
+  }
+
+  /* ============================================
+     5. RESPONSIVE ADJUSTMENTS
+     ============================================ */
+  @media (max-width: 1400px) {
     .main-container {
-      position: absolute;
-      top: 80px;                /* match header’s height (roughly 5%) => 80px? */
-      left: 0;
-      width: 100%;
-      height: calc(100% - 80px);/* fill leftover vertical space */
-      display: flex;
-      overflow: hidden;         /* no scrollbar for the container itself */
-    }
-
-    /* Left view (news tiles) */
-    /* ------------------------------------------------------------- */
-    .left-view {
-      width: 70%;
-      padding: 40px;
-      box-sizing: border-box;
-      border-right: 1px solid #1a1a1a; /* Divider */
-      height: 100%;
-      /* Make it scrollable both ways: */
-      overflow-y: auto;
-      overflow-x: auto;
-    }
-
-    /* Right view (article reader) */
-    /* ------------------------------------------------------------- */
-    .right-view {
-      width: 30%; /* Right section width */
-      padding: 20px;
-      box-sizing: border-box;
-      background-color: #000000;
-      color: #ddd;
-      height: 100%;
-      /* Make it scrollable both ways: */
-      overflow-y: auto;
-      overflow-x: auto;
-    }
-
-    /* FLEX-WRAP container for the news tiles */
-    /* ------------------------------------------------------------- */
-    .news-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.2rem; /* Space between tiles */
-      justify-content: flex-start; /* Aligns tiles to the left */
-    }
-
-    /* Each news tile */
-    /* ------------------------------------------------------------- */
-    .news-tile {
-      position: relative;
-      box-sizing: border-box;
-      background-color: #1a1a1a;
-      color: white;
-      width: calc((100% - (2 * 30px)) / 3); /* 3 columns for desktop */
-      aspect-ratio: 1 / 1; /* keeps them square */
-      display: flex;
       flex-direction: column;
-      padding: 24px;
-      /* 1) Accent color on the tile’s border: */
-      border: 1px solid var(--accent-color);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      border-radius: 0px;
-      cursor: pointer;
-      overflow: hidden; /* Important so pseudo-element is clipped inside tile */
-
-      /* (A) Provide default values for custom props (for the highlight) */
-      --mouse-x: 50%;
-      --mouse-y: 50%;
-      /* Example 2: Use clamp() to keep it readable on very small or large screens */
-      font-size: clamp(0.6rem, 1vw, 1rem);
+      height: auto;
     }
+    .left-view,
+    .right-view {
+      width: 100%;
+      height: auto;
+      border-right: none;  /* remove vertical divider on small screens */
+      border-left: none;
+    }
+    .news-tile {
+      width: calc((100% - 24px) / 2);
+    }
+  }
 
-    /* (B) Circular highlight that follows the mouse.
-       We use a pseudo-element that sits "under" the content. */
-    .news-tile::before {
-      content: "";
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      pointer-events: none;       /* So it won't block clicks */
-      transform: translate(-50%, -50%);
-      top: var(--mouse-y);
-      left: var(--mouse-x);
-      border-radius: 50%;
-      /* 2) Accent color in the highlight: */
-      background: radial-gradient(circle, var(--accent-color), transparent 70%);
+  @media (max-width: 480px) {
+    .news-tile {
+      width: 100%;
+    }
+  }
+  /* A blinking cursor, used for the typed text. */
+  .typed-content {
+    /* Ensure we have a monospace feel if you want that true "terminal" vibe */
+	      font-family: Manrope;
+    font-size: 16px;
+    line-height: 1.5;
+    position: relative;
+    white-space: pre-wrap; /* so we keep line breaks from <pre> */
+  }
+
+  /* The blinking block/caret */
+  .typed-content::after {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 1.2em; /* roughly matches text height */
+    background: #fff;
+    margin-left: 4px;
+    vertical-align: bottom;
+    animation: blink-caret 0.8s infinite;
+  }
+
+  @keyframes blink-caret {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
       opacity: 0;
-      transition: opacity 0.2s ease;
     }
+  }
+	/* Place this at the bottom of your CSS (after existing rules) */
 
-    /* Show the circular highlight on hover */
-    .news-tile:hover::before {
-      opacity: 0.3; /* Feel free to adjust */
-    }
-
-    /* (C) Click effect: invert color when active (with a hue rotate for accent) */
-    .news-tile.active {
-      /* 3) Invert + hue rotate so the result has a distinct accent tint: */
-      filter: invert(1) hue-rotate(160deg) brightness(1.1);
-      transition: filter 0.4s ease;
-    }
-
-    /* Then, inside the tile, use em, so it scales relative to .news-tile's font-size */
-    .news-tile .headline {
-      font-family: Poppins, sans-serif;
-      font-size: 2em;   /* 2 × parent tile’s font-size */
-      font-weight: normal;
-      letter-spacing: -0.03em;
-      margin-bottom: 8px; 
-      line-height: 1.1;
-    }
-
-    .font-pair {
-      font-size: 12px;
-      color: #888;
-      margin-bottom: 16px;
-    }
-
-    .star-icon {
-      position: absolute;
-      top: 24px;
-      right: 24px;
-      color: #666;
-    }
-
-    .headline {
-      font-family: Poppins;
-      font-size: 32px;
-      font-weight: normal;
-      letter-spacing: -0.03rem;
-      margin-bottom: 8px; 
-      line-height: 1.2;
-    }
-
-    .content {
-      font-family: Manrope, sans-serif;
-      font-size: 16px;
-      line-height: 1.5;
-      color: #ddd;
-
-      /* Let content fill remaining vertical space, then clip the overflow */
-      flex: 1;
-      overflow: hidden; 
-      text-overflow: ellipsis; /* only visually applies on single line, but safe to include */
-    }
-
-    .article-reader {
-      font-family: Manrope, sans-serif;
-      font-size: 14px;
-      line-height: 1.8;
-    }
-
-    /* Responsive adjustments: Tablet -> 2 columns, Mobile -> 1 column */
-    /* ------------------------------------------------------------- */
-    @media (max-width: 768px) {
-      .main-container {
-        flex-direction: column;  /* stack top->bottom */
-        height: auto;            /* let container grow in height */
-      }
-      .left-view,
-      .right-view {
-        width: 100%;
-        height: auto; 
-        border-right: none;  /* remove the vertical divider on small screens */
-      }
-      .news-tile {
-        width: calc((100% - 24px) / 2);
-      }
-    }
-
-    @media (max-width: 480px) {
-      .news-tile {
-        width: 100%;
-      }
-    }
-/* NEW (use accent background + black text, no filter) */
-.news-tile.active {
-  background-color: var(--accent-color);
-  color: #000; /* or a dark shade so gray on accent doesn't remain gray on itself */
-  filter: none;
-  transition: background-color 0.4s ease, color 0.4s ease;
-}
-
-/* Make sure the star icon also changes to black (if you want it black) */
-.news-tile.active p {
-  color: #000;
-}
-	.news-tile {
-  /* Keep existing base properties */
-  position: relative;
-  box-sizing: border-box;
-  color: white;
-  width: calc((100% - (2 * 30px)) / 3);
-  aspect-ratio: 1 / 1;
-  display: flex;
-  flex-direction: column;
-  padding: 24px;
-  cursor: pointer;
-  overflow: hidden;
-  
-  /* Update background and glass effect */
-  background: rgba(26, 26, 26, 0.4);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  
-  /* Smooth transitions for all effects */
-  transition: all 0.3s ease;
-  
-  /* Keep mouse tracking properties */
-  --mouse-x: 50%;
-  --mouse-y: 50%;
-  font-size: clamp(0.6rem, 1vw, 1rem);
-}
-
-/* Update the hover highlight to work with glass effect */
-.news-tile::before {
-  content: "";
+/* The overlay that covers the entire right-view at first */
+.blur-reveal-overlay {
   position: absolute;
-  width: 200px;
-  height: 200px;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  top: var(--mouse-y);
-  left: var(--mouse-x);
-  border-radius: 50%;
-  /* Adjust gradient to be more visible on glass */
-  background: radial-gradient(
-    circle,
-    rgba(225, 234, 205, 0.3),
-    transparent 70%
-  );
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 1;
-}
-
-/* Update active state for glass effect */
-.news-tile.active {
-  background-color: var(--accent-color);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-color: var(--accent-color);
-  /* Ensure text is readable when active */
-  color: #000;
-}
-
-/* Ensure all content stays readable on glass background */
-.news-tile .content {
-  position: relative;
-  z-index: 2;
-  /* Slightly increase contrast for better readability */
-  color: rgba(255, 255, 255, 0.9);
-}
-
-/* Update star icon color for better visibility */
-.news-tile .star-icon {
-  color: rgba(255, 255, 255, 0.4);
-  z-index: 2;
-}
-
-/* Ensure font-pair is readable */
-.news-tile .font-pair {
-  color: rgba(255, 255, 255, 0.6);
-  z-index: 2;
-}
-
-/* Make sure active state properly affects all text */
-.news-tile.active .content,
-.news-tile.active .star-icon,
-.news-tile.active .font-pair,
-.news-tile.active .headline {
-  color: #000;
-}  
-.main-container {
-  position: absolute;
-  top: 80px;
+  top: 0; 
   left: 0;
   width: 100%;
-  height: calc(100% - 80px);
-  display: flex;
-  /* Temporarily remove overflow: hidden to see if it helps */
-  /* overflow: hidden; */
-}
+  height: 100%;
 
-.left-view {
-  /* Add an image or some gradient so we can see the blur behind tiles */
-  background: linear-gradient(45deg, #333, #000);
-  /* or background: url('some-image.jpg') center/cover no-repeat; */
-  overflow-y: auto;
-  overflow-x: auto;
-}
-
-/* Keep your tile with partial transparency & backdrop-filter */
-.news-tile {
+  /* Same glassy effect as your tiles */
   background: rgba(26, 26, 26, 0.4);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  /* ... rest of your styling ... */
-}
-/* Modify the content class to add the blur fade effect */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 
-.news-tile .content {
-  position: relative;
-  font-family: Manrope, sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #ddd;
-  flex: 1;
-  overflow: hidden;
-}
-
-/* Single fade-out effect that works with both states */
-.news-tile .content::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: transparent;
+  /* So clicks pass through (optional) */
   pointer-events: none;
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  
-  /* Gradient mask for both blur and opacity */
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(0, 0, 0, 0.8) 20%,
-    black 50%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(0, 0, 0, 0.8) 20%,
-    black 50%
-  );
+  z-index: 99; /* above article content but below the header bar */
+
+  /* Slide-out animation (left -> right). 
+     After finishing, 'forwards' keeps the final state (out of sight). */
+  animation: blurRevealSlide 1.2s ease-in-out forwards;
 }
 
-/* Remove any color-based gradients and rely on opacity only */
-.news-tile .content {
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    black 10%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    black 10%,
-    transparent 100%
-  );
+
+@keyframes blurRevealSlide {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
-  </style>
+</style>
 
-  <script>
-    function handleTileClick(tile) {
-      // 1) Remove "active" from all tiles so only the newly clicked tile is inverted
-      const allTiles = document.querySelectorAll(".news-tile");
-      allTiles.forEach(t => t.classList.remove("active"));
+<script>
+  function handleTileClick(tile) {
+    // 1) Remove "active" from all tiles so only the newly clicked tile is 'active'
+    const allTiles = document.querySelectorAll(".news-tile");
+    allTiles.forEach(t => t.classList.remove("active"));
 
-      // 2) Add "active" to the clicked tile
-      tile.classList.add("active");
+    // 2) Add "active" to the clicked tile
+    tile.classList.add("active");
 
-      // 3) Show BOTH the headline and the full text in the right view
-      const headlineText = tile.querySelector(".headline").innerText;
-      const fullTextElement = tile.querySelector(".content");
-      const fullText = fullTextElement.innerHTML;
+    // 3) Grab text from the tile’s .headline + .content
+    const headlineText = tile.querySelector(".headline").innerText;
+    const fullText = tile.querySelector(".content").innerHTML;
 
-      const reader = document.querySelector(".right-view");
-      reader.innerHTML = `
-        <div class='article-reader'>
-          <h2 class="headline">${headlineText}</h2>
-          ${fullText}
-        </div>
-      `;
-    }
+    // 4) Populate the right-view with new content
+    const reader = document.querySelector(".right-view");
+    reader.innerHTML = `
+      <div class='article-reader'>
+        <h2 class="headline">${headlineText}</h2>
+        ${fullText}
+      </div>
+    `;
 
-    // For the circular highlight, track mousemove inside each tile
-    function attachMouseMoveListeners() {
-      const tiles = document.querySelectorAll(".news-tile");
-      tiles.forEach(tile => {
-        tile.addEventListener("mousemove", (e) => {
-          const rect = tile.getBoundingClientRect();
-          // compute x,y relative to the tile
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          // update the custom properties (used by .news-tile::before)
-          tile.style.setProperty("--mouse-x", x + "px");
-          tile.style.setProperty("--mouse-y", y + "px");
-        });
+    // 5) Create the blur overlay and append it above the new article
+    const overlay = document.createElement("div");
+    overlay.classList.add("blur-reveal-overlay");
+
+    // Insert the overlay into the right-view (same container as the article)
+    // so it fully covers the article while the animation runs.
+    reader.appendChild(overlay);
+
+    // 6) Once the animation finishes, remove the overlay from the DOM
+    overlay.addEventListener("animationend", () => {
+      overlay.remove();
+    });
+  }
+
+  // Keep your existing mousemove highlight logic, etc.
+  function attachMouseMoveListeners() {
+    const tiles = document.querySelectorAll(".news-tile");
+    tiles.forEach(tile => {
+      tile.addEventListener("mousemove", (e) => {
+        const rect = tile.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        tile.style.setProperty("--mouse-x", x + "px");
+        tile.style.setProperty("--mouse-y", y + "px");
       });
-    }
+    });
+  }
 
-    document.addEventListener("DOMContentLoaded", attachMouseMoveListeners);
-  </script>
+  document.addEventListener("DOMContentLoaded", attachMouseMoveListeners);
+</script>
+
+
 </head>
 <body>
 
@@ -475,12 +509,28 @@
           <div class="star-icon">★</div>
           <h2 class="headline">Meet the Man Behind His Own Website</h2>
           <p class="content">
-            I am born, O goddess of the blue eyes, of barbarian parents, among the good and virtuous 
-            Cimmerians who dwell by the shore of a melancholy sea, bristling with rocks ever lashed 
-            by the storm. The sun is scarcely known in this country, its flowers are seaweed, marine 
-            plants, and the coloured shells which are gathered in the recesses of lonely bays. 
-            The clouds seem colourless, and even joy is rather sorrowful there; 
-            but fountains of fresh water spring out of the rocks...
+Hello there! I’m Yisu Fang—a robotics engineer, IoT specialist, and, most recently, the creative mind behind this very website. If you’re here, you’ve probably come across my work in robotics, artificial intelligence, or IoT. Or perhaps you just wanted to meet the person who turned his CV into a newsworthy website. Either way, welcome!
+A Foundation of Curiosity
+
+My academic journey began with a BEng in Internet of Things Engineering with Contemporary Entrepreneurialism from Xi’an Jiaotong-Liverpool University (XJTLU), awarded by the University of Liverpool. Graduating with First Class Honours, I combined a passion for technology with an entrepreneurial mindset.
+
+Fast forward to today, I’m pursuing an MSc in Robotics at the University of Birmingham, where I’m diving deep into autonomous systems, AI-powered decision-making, and IoT integration.
+The Work I’m Proud Of
+
+I thrive on solving real-world challenges with innovative solutions. From developing an autonomous irrigation robot powered by ROS2 and YOLOv8 to creating a secure, distributed robotic control system with AES-encrypted ESP32 wireless mesh networks, I’ve built projects that bridge cutting-edge technology and practical applications.
+
+My work often finds its way into academic circles, with publications at esteemed conferences like ICiMR and IEEE SmartIoT. Highlights include designing SLAM-based robotic navigation systems and crafting NLP-powered robots that understand and execute multilingual voice commands.
+The Skillset That Drives Me
+
+Behind every project is a diverse skill set: proficiency in ROS2, SLAM, Python, embedded systems, and AI algorithms, to name a few. Whether it’s optimizing machine vision algorithms or developing IoT applications, my aim is always to push boundaries while maintaining a focus on real-world impact.
+Outside the Lab
+
+You might find me tinkering with DIY robotics projects, creating concept art in Unreal Engine 5, or contemplating the retrofuturist aesthetics of a reimagined Roman Empire. (Yes, I dabble in world-building for video games, too!)
+Why This Website?
+
+This website is more than a portfolio; it’s a glimpse into how I think and work. The same creativity and precision that brought you this article guide my approach to research and innovation.
+
+So, whether you’re a prospective supervisor, collaborator, or someone intrigued by the fusion of tech and storytelling, feel free to explore. And if you’d like to connect, my inbox is always open.
           </p>
         </div>
 
@@ -489,12 +539,28 @@
           <div class="star-icon">★</div>
           <h2 class="headline">First Class Engineer-<br>ing Degree</h2>
           <p class="content">
-            ARMS and the Heroes, who from Lisbon's shore,
-            Thro' seas where sail was never spread before,
-            Beyond where Ceylon lifts her spicy breast,
-            And waves her woods above the watery waste,
-            With prowess more than human forc'd their way
-            To the fair kingdoms of the rising day...
+What’s in a degree? For me, it’s more than a piece of paper or a line on my CV. It’s a journey filled with discovery, challenges, and the occasional late-night debugging session. But let’s not get ahead of ourselves—let’s start at the beginning.
+The Beginning of Engineering Excellence
+
+I earned my BEng in Internet of Things Engineering with Contemporary Entrepreneurialism from Xi’an Jiaotong-Liverpool University (XJTLU), an academic powerhouse affiliated with the University of Liverpool. Graduating with First Class Honours wasn’t just about acing exams; it was about immersing myself in the principles of IoT, diving headfirst into entrepreneurship, and learning to bridge the gap between technical know-how and practical application.
+What Set This Degree Apart
+
+Here’s the thing about IoT: it’s not just about sensors and servers; it’s about creating intelligent systems that talk to each other—and, more importantly, to us. Throughout my degree, I tackled challenges that tested my skills and stretched my creativity. I designed embedded systems, engineered wireless communication protocols, and delved into data security, all while fostering a strong entrepreneurial mindset.
+
+And the entrepreneurial aspect wasn’t just theoretical. Whether it was pitching ideas for smart systems or collaborating on IoT-based solutions, I developed a knack for thinking beyond the code—toward innovation, impact, and scalability.
+Highlights Worth Mentioning
+
+    Developed autonomous systems that blended robotics, AI, and IoT.
+    Designed machine vision defect detection systems as part of my capstone projects.
+    Pushed the limits of wireless mesh networking for secure and distributed robotics applications.
+    Earned the Best Final Year Project Award for my autonomous houseplant irrigation robot.
+
+Where It’s Taken Me
+
+This “first class” engineer-ing degree set the stage for my current pursuits: an MSc in Robotics at the University of Birmingham, where I’m exploring the integration of SLAM, ROS2, and AI-powered decision-making for autonomous systems. It also laid the foundation for my publications at prestigious conferences like ICIMR and IEEE SmartIoT, where I continue to blend cutting-edge tech with practical innovation.
+A Degree Worth a Punchline
+
+So, why the cheeky headline? It’s my way of celebrating a degree that’s more than a credential—it’s a testament to hard work, curiosity, and the desire to create solutions that matter. And if I can inject a bit of humor into describing it, that’s just the engineer-(newline)-ing spirit at work.
           </p>
         </div>
 
