@@ -1,313 +1,458 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <title>Accent Tincture Demo</title>
 
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Manrope&display=swap" rel="stylesheet">
-<style>
-  /* Reset, body & global layout */
-  /* ------------------------------------------------------------- */
-  html, body {
-    margin: 0; 
-    padding: 0; 
-    height: 100%;
-    background-color: #000;
-    color: #fff;
-    font-family: Manrope, system-ui, -apple-system, sans-serif;
-  }
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&display=swap" rel="stylesheet">
 
-  /* Make a container that sits below the fixed header */
-  /* This container holds left-view and right-view side by side */
-  .main-container {
-    display: flex; 
-    width: 100%;
-    margin-top: 80px; /* Space for the fixed header so content isn't hidden by header */
-  }
+  <style>
+    :root {
+      /* Change this to your favorite accent color! */
+      --accent-color: #e1eacd; 
+    }
 
-  /* Header bar (fixed) at top */
-  /* ------------------------------------------------------------- */
-  .header-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 9999;
-    background-color: #333; 
-    color: #fff;
-    padding: 15px 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    /* Reset, body & global layout */
+    /* ------------------------------------------------------------- */
+    html, body {
+      margin: 0; 
+      padding: 0; 
+      height: 100%;
+      background-color: #000;
+      color: #fff;
+      font-family: Manrope, system-ui, -apple-system, sans-serif;
+      overflow: hidden; /* Hide the entire page’s scrollbar */
+    }
 
-    /* Put <h2> and <p> on the same line using flex */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-  }
-	.header-bar h2{
-		font-family: Poppins;
-		margin: 0;
-	}
-  .header-bar p {
-    margin: 0;
-  }
+    /* Header bar (fixed) at top */
+    /* ------------------------------------------------------------- */
+    .header-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5%;
+      z-index: 9999;
+      background-color: #1a1a1a; 
+      color: #fff;
+      padding: 10px 0px;
+      box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
 
-  /* Left view (news tiles) */
-  /* ------------------------------------------------------------- */
-  .left-view {
-    /* 80% so the right-view’s 20% takes the rest, no gaps */
-    width: 64%;
-    padding: 20px;
-    border-right: 1px solid #333; /* Divider */
-    box-sizing: border-box;
-    overflow-y: auto;
-    height: calc(100vh - 80px);  /* Full height minus header */
-  }
+      /* Put <h2> and <p> on the same line using flex */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .header-bar h2 {
+      font-family: Poppins;
+      margin: 0;
+    }
+    .header-bar p {
+      margin: 0;
+    }
 
-  /* Right view (article reader) */
-  /* ------------------------------------------------------------- */
-  .right-view {
-    width: 36%; /* Right section width */
-    padding: 20px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    background-color: #000000;
-    color: #ddd;
-    height: calc(100vh - 80px); /* Full height minus header */
-  }
+    /* Main container below the fixed header, holding left and right views */
+    /* ------------------------------------------------------------- */
+    .main-container {
+      position: absolute;
+      top: 80px;                /* match header’s height (roughly 5%) => 80px? */
+      left: 0;
+      width: 100%;
+      height: calc(100% - 80px);/* fill leftover vertical space */
+      display: flex;
+      overflow: hidden;         /* no scrollbar for the container itself */
+    }
 
-  /* FLEX-WRAP container for the news tiles */
-  /* ------------------------------------------------------------- */
-  .news-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px; /* Space between tiles */
-    justify-content: flex-start; /* Aligns tiles to the left */
-  }
+    /* Left view (news tiles) */
+    /* ------------------------------------------------------------- */
+    .left-view {
+      width: 70%;
+      padding: 40px;
+      box-sizing: border-box;
+      border-right: 1px solid #1a1a1a; /* Divider */
+      height: 100%;
+      /* Make it scrollable both ways: */
+      overflow-y: auto;
+      overflow-x: auto;
+    }
 
-  /* Each news tile */
-  /* ------------------------------------------------------------- */
-  .news-tile {
-    position: relative;
-    box-sizing: border-box;
-    background-color: #1a1a1a;
-    color: white;
-    width: calc((100% - (2 * 24px)) / 3); /* 3 columns for desktop */
-    aspect-ratio: 1 / 1; /* keeps them square */
-    display: flex;
-    flex-direction: column;
-    padding: 24px;
-    border: 1px solid #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 0px;
-    cursor: pointer;
-    overflow: hidden; /* Important so pseudo-element is clipped inside tile */
-    
-    /* (A) Provide default values for custom props (for the highlight) */
-    --mouse-x: 50%;
-    --mouse-y: 50%;
-  }
+    /* Right view (article reader) */
+    /* ------------------------------------------------------------- */
+    .right-view {
+      width: 30%; /* Right section width */
+      padding: 20px;
+      box-sizing: border-box;
+      background-color: #000000;
+      color: #ddd;
+      height: 100%;
+      /* Make it scrollable both ways: */
+      overflow-y: auto;
+      overflow-x: auto;
+    }
 
-  /* (B) Circular highlight that follows the mouse.
-     We use a pseudo-element that sits "under" the content. */
-  .news-tile::before {
-    content: "";
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    pointer-events: none;       /* So it won't block clicks */
-    transform: translate(-50%, -50%);
-    top: var(--mouse-y);
-    left: var(--mouse-x);
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%);
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
+    /* FLEX-WRAP container for the news tiles */
+    /* ------------------------------------------------------------- */
+    .news-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem; /* Space between tiles */
+      justify-content: flex-start; /* Aligns tiles to the left */
+    }
 
-  /* Show the circular highlight on hover */
-  .news-tile:hover::before {
-    opacity: 1;
-  }
+    /* Each news tile */
+    /* ------------------------------------------------------------- */
+    .news-tile {
+      position: relative;
+      box-sizing: border-box;
+      background-color: #1a1a1a;
+      color: white;
+      width: calc((100% - (2 * 30px)) / 3); /* 3 columns for desktop */
+      aspect-ratio: 1 / 1; /* keeps them square */
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      /* 1) Accent color on the tile’s border: */
+      border: 1px solid var(--accent-color);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 0px;
+      cursor: pointer;
+      overflow: hidden; /* Important so pseudo-element is clipped inside tile */
 
-  /* (C) Click effect: invert color when active (and stay that way) */
-  .news-tile.active {
-    filter: invert(1);
-    transition: filter 0.4s ease;
-  }
-/* In your existing .news-tile block, 
-   set a base font-size using viewport-relative or clamp. */
-.news-tile {
-  /* existing styles omitted for brevity... */
+      /* (A) Provide default values for custom props (for the highlight) */
+      --mouse-x: 50%;
+      --mouse-y: 50%;
+      /* Example 2: Use clamp() to keep it readable on very small or large screens */
+      font-size: clamp(0.6rem, 1vw, 1rem);
+    }
 
-  /* Example 1: Use vw so font scales with viewport width */
-  /* font-size: 1.2vw; */
+    /* (B) Circular highlight that follows the mouse.
+       We use a pseudo-element that sits "under" the content. */
+    .news-tile::before {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      pointer-events: none;       /* So it won't block clicks */
+      transform: translate(-50%, -50%);
+      top: var(--mouse-y);
+      left: var(--mouse-x);
+      border-radius: 50%;
+      /* 2) Accent color in the highlight: */
+      background: radial-gradient(circle, var(--accent-color), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
 
-  /* Example 2: Use clamp() to keep it readable on very small or very large screens */
+    /* Show the circular highlight on hover */
+    .news-tile:hover::before {
+      opacity: 0.3; /* Feel free to adjust */
+    }
+
+    /* (C) Click effect: invert color when active (with a hue rotate for accent) */
+    .news-tile.active {
+      /* 3) Invert + hue rotate so the result has a distinct accent tint: */
+      filter: invert(1) hue-rotate(160deg) brightness(1.1);
+      transition: filter 0.4s ease;
+    }
+
+    /* Then, inside the tile, use em, so it scales relative to .news-tile's font-size */
+    .news-tile .headline {
+      font-family: Poppins, sans-serif;
+      font-size: 2em;   /* 2 × parent tile’s font-size */
+      font-weight: normal;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px; 
+      line-height: 1.1;
+    }
+
+    .font-pair {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 16px;
+    }
+
+    .star-icon {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      color: #666;
+    }
+
+    .headline {
+      font-family: Poppins;
+      font-size: 32px;
+      font-weight: normal;
+      letter-spacing: -0.03rem;
+      margin-bottom: 8px; 
+      line-height: 1.2;
+    }
+
+    .content {
+      font-family: Manrope, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #ddd;
+
+      /* Let content fill remaining vertical space, then clip the overflow */
+      flex: 1;
+      overflow: hidden; 
+      text-overflow: ellipsis; /* only visually applies on single line, but safe to include */
+    }
+
+    .article-reader {
+      font-family: Manrope, sans-serif;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    /* Responsive adjustments: Tablet -> 2 columns, Mobile -> 1 column */
+    /* ------------------------------------------------------------- */
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;  /* stack top->bottom */
+        height: auto;            /* let container grow in height */
+      }
+      .left-view,
+      .right-view {
+        width: 100%;
+        height: auto; 
+        border-right: none;  /* remove the vertical divider on small screens */
+      }
+      .news-tile {
+        width: calc((100% - 24px) / 2);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .news-tile {
+        width: 100%;
+      }
+    }
+/* NEW (use accent background + black text, no filter) */
+.news-tile.active {
+  background-color: var(--accent-color);
+  color: #000; /* or a dark shade so gray on accent doesn't remain gray on itself */
+  filter: none;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Make sure the star icon also changes to black (if you want it black) */
+.news-tile.active p {
+  color: #000;
+}
+	.news-tile {
+  /* Keep existing base properties */
+  position: relative;
+  box-sizing: border-box;
+  color: white;
+  width: calc((100% - (2 * 30px)) / 3);
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  cursor: pointer;
+  overflow: hidden;
+  
+  /* Update background and glass effect */
+  background: rgba(26, 26, 26, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  /* Smooth transitions for all effects */
+  transition: all 0.3s ease;
+  
+  /* Keep mouse tracking properties */
+  --mouse-x: 50%;
+  --mouse-y: 50%;
   font-size: clamp(0.6rem, 1vw, 1rem);
 }
 
-/* Then, inside the tile, use em, so it scales relative to .news-tile's font-size */
-.news-tile .headline {
-  font-family: Poppins, sans-serif;
-  /* Example: 2em means "2 × parent tile’s font-size" */
-  font-size: 2em;
-  font-weight: normal;
-  letter-spacing: -0.03em;
-  margin-bottom: 8px; 
-  line-height: 1.1;
+/* Update the hover highlight to work with glass effect */
+.news-tile::before {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  top: var(--mouse-y);
+  left: var(--mouse-x);
+  border-radius: 50%;
+  /* Adjust gradient to be more visible on glass */
+  background: radial-gradient(
+    circle,
+    rgba(225, 234, 205, 0.3),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
 }
 
-  /* (D) Font details in the tile */
-  .font-pair {
-    font-size: 12px;
-    color: #888;
-    margin-bottom: 16px;
-  }
-
-  .star-icon {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    color: #666;
-  }
-
-  .headline {
-    font-family: Poppins;
-    font-size: 32px;
-    font-weight: normal;
-	  letter-spacing: -0.03em;
-    margin-bottom: 8px; 
-    line-height: 1.2;
-  }
-
-  /* 
-     No more line-clamping. We'll just let it fill the leftover space in the tile
-     and hide the overflow (natural truncation). 
-  */
-  .content {
-    font-family: Manrope, sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
-    color: #ddd;
-
-    /* Let content fill remaining vertical space, then clip the overflow */
-    flex: 1;
-    overflow: hidden; 
-    text-overflow: ellipsis; /* only visually applies on single line, but safe to include */
-  }
-
-  .article-reader {
-    font-family: Manrope, sans-serif;
-    font-size: 14px;
-    line-height: 1.8;
-  }
-
-  /* Responsive adjustments: Tablet -> 2 columns, Mobile -> 1 column */
-  /* ------------------------------------------------------------- */
-  @media (max-width: 768px) {
-    .left-view {
-      width: 100%;
-      border-right: none;
-    }
-    .right-view {
-      display: none; /* Hide reader on smaller screens if desired */
-    }
-    .news-tile {
-      width: calc((100% - 24px) / 2);
-    }
-  }
-
-  @media (max-width: 480px) {
-    .news-tile {
-      width: 100%;
-    }
-  }
-	/* 1) Hide the entire page’s scrollbar */
-html, body {
-  overflow: hidden; /* Ensures no scrolling on the page */
+/* Update active state for glass effect */
+.news-tile.active {
+  background-color: var(--accent-color);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-color: var(--accent-color);
+  /* Ensure text is readable when active */
+  color: #000;
 }
 
-/* 2) Your existing header-bar (80px tall) remains fixed at top 
-   (You likely already have something like this):
-.header-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 80px;         /* or whatever your header height is */
-  z-index: 9999;
-  background-color: #333; 
-  /* ... plus any additional styling */
+/* Ensure all content stays readable on glass background */
+.news-tile .content {
+  position: relative;
+  z-index: 2;
+  /* Slightly increase contrast for better readability */
+  color: rgba(255, 255, 255, 0.9);
 }
-*/
 
-/* 3) Reconfigure main-container: 
-      - Absolutely positioned below the fixed header 
-      - Fill remaining space with no scroll of its own
-      - Keep display:flex for side-by-side layout
-*/
+/* Update star icon color for better visibility */
+.news-tile .star-icon {
+  color: rgba(255, 255, 255, 0.4);
+  z-index: 2;
+}
+
+/* Ensure font-pair is readable */
+.news-tile .font-pair {
+  color: rgba(255, 255, 255, 0.6);
+  z-index: 2;
+}
+
+/* Make sure active state properly affects all text */
+.news-tile.active .content,
+.news-tile.active .star-icon,
+.news-tile.active .font-pair,
+.news-tile.active .headline {
+  color: #000;
+}  
 .main-container {
   position: absolute;
-  top: 80px;                /* match header’s height */
+  top: 80px;
   left: 0;
   width: 100%;
-  height: calc(100% - 80px);/* fill leftover vertical space */
+  height: calc(100% - 80px);
   display: flex;
-  overflow: hidden;         /* no scrollbar for the container itself */
-  /* remove margin-top: 80px if you had it */
+  /* Temporarily remove overflow: hidden to see if it helps */
+  /* overflow: hidden; */
 }
 
-/* 4) Let left-view and right-view scroll individually */
-.left-view {              /* or however you want to divide it */
-  height: 100%;
-  overflow-y: auto;         /* separate scrollbar */
-  /* any additional styling, e.g. padding, border-right, etc. */
+.left-view {
+  /* Add an image or some gradient so we can see the blur behind tiles */
+  background: linear-gradient(45deg, #333, #000);
+  /* or background: url('some-image.jpg') center/cover no-repeat; */
+  overflow-y: auto;
+  overflow-x: auto;
 }
 
-.right-view {
-  height: 100%;
-  overflow-y: auto;         /* separate scrollbar */
-  /* any additional styling, e.g. padding, background-color, etc. */
+/* Keep your tile with partial transparency & backdrop-filter */
+.news-tile {
+  background: rgba(26, 26, 26, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* ... rest of your styling ... */
+}
+/* Modify the content class to add the blur fade effect */
+
+.news-tile .content {
+  position: relative;
+  font-family: Manrope, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #ddd;
+  flex: 1;
+  overflow: hidden;
 }
 
-</style>
-
-<script>
-function handleTileClick(tile) {
-  // 1) Remove "active" from all tiles so only the newly clicked tile is inverted
-  const allTiles = document.querySelectorAll(".news-tile");
-  allTiles.forEach(t => t.classList.remove("active"));
-
-  // 2) Add "active" to the clicked tile
-  tile.classList.add("active");
-
-  // 3) Show the full text in the right view
-  const fullTextElement = tile.querySelector('.content');
-  const fullText = fullTextElement.innerHTML;
-  const reader = document.querySelector(".right-view");
-  reader.innerHTML = `<div class='article-reader'>${fullText}</div>`;
+/* Single fade-out effect that works with both states */
+.news-tile .content::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  pointer-events: none;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  
+  /* Gradient mask for both blur and opacity */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.8) 20%,
+    black 50%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.8) 20%,
+    black 50%
+  );
 }
 
-// For the circular highlight, track mousemove inside each tile
-function attachMouseMoveListeners() {
-  const tiles = document.querySelectorAll(".news-tile");
-  tiles.forEach(tile => {
-    tile.addEventListener("mousemove", (e) => {
-      const rect = tile.getBoundingClientRect();
-      // compute x,y relative to the tile
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      // update the custom properties (used by .news-tile::before)
-      tile.style.setProperty("--mouse-x", x + "px");
-      tile.style.setProperty("--mouse-y", y + "px");
-    });
-  });
+/* Remove any color-based gradients and rely on opacity only */
+.news-tile .content {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black 10%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    black 10%,
+    transparent 100%
+  );
 }
 
-document.addEventListener("DOMContentLoaded", attachMouseMoveListeners);
-</script>
+  </style>
+
+  <script>
+    function handleTileClick(tile) {
+      // 1) Remove "active" from all tiles so only the newly clicked tile is inverted
+      const allTiles = document.querySelectorAll(".news-tile");
+      allTiles.forEach(t => t.classList.remove("active"));
+
+      // 2) Add "active" to the clicked tile
+      tile.classList.add("active");
+
+      // 3) Show BOTH the headline and the full text in the right view
+      const headlineText = tile.querySelector(".headline").innerText;
+      const fullTextElement = tile.querySelector(".content");
+      const fullText = fullTextElement.innerHTML;
+
+      const reader = document.querySelector(".right-view");
+      reader.innerHTML = `
+        <div class='article-reader'>
+          <h2 class="headline">${headlineText}</h2>
+          ${fullText}
+        </div>
+      `;
+    }
+
+    // For the circular highlight, track mousemove inside each tile
+    function attachMouseMoveListeners() {
+      const tiles = document.querySelectorAll(".news-tile");
+      tiles.forEach(tile => {
+        tile.addEventListener("mousemove", (e) => {
+          const rect = tile.getBoundingClientRect();
+          // compute x,y relative to the tile
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          // update the custom properties (used by .news-tile::before)
+          tile.style.setProperty("--mouse-x", x + "px");
+          tile.style.setProperty("--mouse-y", y + "px");
+        });
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", attachMouseMoveListeners);
+  </script>
 </head>
 <body>
 
@@ -358,7 +503,7 @@ document.addEventListener("DOMContentLoaded", attachMouseMoveListeners);
           <div class="star-icon">★</div>
           <h2 class="headline">Sequel to My First IEEE Conference: My Second IEEE Conference</h2>
           <p class="content">
-This scene from the north wall of Medinet Habu is often used to illustrate the Egyptian campaign against the Sea Peoples, in what has come to be known as the Battle of the Delta (c. 1175 BC), during the reign of Ramesses III. While accompanying hieroglyphs do not name Egypt's enemies, describing them simply as being from "northern countries", early scholars noted the similarities between the hairstyles and accessories worn by the combatants and other reliefs in which such groups are named.
+            This scene from the north wall of Medinet Habu is often used to illustrate the Egyptian campaign against the Sea Peoples, in what has come to be known as the Battle of the Delta (c. 1175 BC), during the reign of Ramesses III. While accompanying hieroglyphs do not name Egypt's enemies, describing them simply as being from "northern countries", early scholars noted the similarities between the hairstyles and accessories worn by the combatants and other reliefs in which such groups are named.
           </p>
         </div>
 
@@ -377,6 +522,33 @@ This scene from the north wall of Medinet Habu is often used to illustrate the E
           <h2 class="headline">Get a Limited Copy of My CV Today For Free</h2>
           <p class="content">
             Content 5
+          </p>
+        </div>
+
+        <div class="news-tile" onclick="handleTileClick(this)">
+          <div class="font-pair">Roboto Bold + Lato Regular</div>
+          <div class="star-icon">★</div>
+          <h2 class="headline">Tile 4</h2>
+          <p class="content">
+            Content 4
+          </p>
+        </div>
+
+        <div class="news-tile" onclick="handleTileClick(this)">
+          <div class="font-pair">Roboto Bold + Lato Regular</div>
+          <div class="star-icon">★</div>
+          <h2 class="headline">Tile 4</h2>
+          <p class="content">
+            Content 4
+          </p>
+        </div>
+
+        <div class="news-tile" onclick="handleTileClick(this)">
+          <div class="font-pair">Roboto Bold + Lato Regular</div>
+          <div class="star-icon">★</div>
+          <h2 class="headline">Tile 4</h2>
+          <p class="content">
+            Content 4
           </p>
         </div>
 
