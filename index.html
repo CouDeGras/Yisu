@@ -381,63 +381,77 @@
   <!-- ==========================
        JAVASCRIPT
        ========================== -->
-  <script>
-    // 1) When a tile is clicked, fetch its 'data-file' HTML, insert into right-view
-    function handleTileClick(tile) {
-      // Remove "active" from all tiles, add to the clicked tile
-      const allTiles = document.querySelectorAll(".news-tile");
-      allTiles.forEach(t => t.classList.remove("active"));
-      tile.classList.add("active");
+<script>
+  function handleTileClick(tile) {
+    // 1) Remove "active" from all tiles and add to the clicked tile
+    const allTiles = document.querySelectorAll(".news-tile");
+    allTiles.forEach(t => t.classList.remove("active"));
+    tile.classList.add("active");
 
-      // Identify which file to load (from data-file attribute)
-      const fileToLoad = tile.getAttribute("data-file");
-      if (!fileToLoad) {
-        console.warn("No data-file attribute found on tile:", tile);
-        return;
-      }
-
-      // Fetch the external HTML file
-      fetch(fileToLoad)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`Failed to load ${fileToLoad}: ${response.status}`);
-          }
-          return response.text();
-        })
-        .then(htmlContent => {
-          // Insert that HTML into the .right-view
-          const rightView = document.querySelector(".right-view");
-          rightView.innerHTML = htmlContent;
-
-          // Add the blur overlay effect
-          const overlay = document.createElement("div");
-          overlay.classList.add("blur-reveal-overlay");
-          rightView.appendChild(overlay);
-
-          // Remove overlay after animation
-          overlay.addEventListener("animationend", () => overlay.remove());
-        })
-        .catch(error => {
-          console.error("Error loading tile file:", error);
-        });
+    // 2) Identify which file to load
+    const fileToLoad = tile.getAttribute("data-file");
+    if (!fileToLoad) {
+      console.warn("No data-file attribute found on tile:", tile);
+      return;
     }
 
-    // 2) Mousemove highlight logic
-    function attachMouseMoveListeners() {
-      const tiles = document.querySelectorAll(".news-tile");
-      tiles.forEach(tile => {
-        tile.addEventListener("mousemove", (e) => {
-          const rect = tile.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          tile.style.setProperty("--mouse-x", x + "px");
-          tile.style.setProperty("--mouse-y", y + "px");
-        });
+    // 3) Fetch the external HTML file
+    fetch(fileToLoad)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to load ${fileToLoad} (status ${response.status})`);
+        }
+        return response.text();
+      })
+      .then(htmlContent => {
+        // 4) Insert the fetched HTML into the .right-view
+        const rightView = document.querySelector(".right-view");
+        rightView.innerHTML = htmlContent;
+
+        // 5) Add the blur overlay effect
+        const overlay = document.createElement("div");
+        overlay.classList.add("blur-reveal-overlay");
+        rightView.appendChild(overlay);
+
+        // 6) Remove the overlay after the animation
+        overlay.addEventListener("animationend", () => overlay.remove());
+      })
+      .catch(error => {
+        // 7) Log error to console (debug) and show a user-friendly message
+        console.error("Error loading tile file:", error);
+
+        // Display an error message in the right-view
+        const rightView = document.querySelector(".right-view");
+        rightView.innerHTML = `
+          <div class="article-reader">
+            <h2 class="headline">Error Loading Content</h2>
+            <p class="content">
+              We're sorry, but we couldn't load the requested file: <code>${fileToLoad}</code>.
+            </p>
+            <p class="content">
+              Debug info: ${error.message}
+            </p>
+          </div>
+        `;
       });
-    }
+  }
 
-    document.addEventListener("DOMContentLoaded", attachMouseMoveListeners);
-  </script>
+  function attachMouseMoveListeners() {
+    const tiles = document.querySelectorAll(".news-tile");
+    tiles.forEach(tile => {
+      tile.addEventListener("mousemove", (e) => {
+        const rect = tile.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        tile.style.setProperty("--mouse-x", x + "px");
+        tile.style.setProperty("--mouse-y", y + "px");
+      });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", attachMouseMoveListeners);
+</script>
+
 </head>
 
 <body>
