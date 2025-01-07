@@ -5,628 +5,532 @@
   <title>Yisu Fang :: Portfolio</title>
 
   <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Manrope&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope&display=swap"
+    rel="stylesheet"
+  />
 
-<style>
-  /* =======================================
-     1. GLOBAL VARIABLES & BASE STYLING
-     ======================================= */
-  :root {
-    /* Change this to your favorite accent color! */
-    --accent-color: #e1eacd; 
-    
-    /* Control how much blur you want across the page. */
-    --blur-value: 12px;
-  }
+  <!-- ==========================
+       YOUR EXISTING STYLES
+       (Glassmorphism, Layout)
+       ========================== -->
+  <style>
+    /* =======================================
+       1. GLOBAL VARIABLES & BASE STYLING
+       ======================================= */
+    :root {
+      --accent-color: #e1eacd; 
+      --blur-value: 12px;
+    }
 
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    /* Overall background gradient */
-    background: linear-gradient(135deg, #111, #000);
-    /* Let content scroll if needed; position relative for pseudo-element */
-    position: relative;
-    overflow: auto;
-    color: #fff;
-    font-family: Manrope, system-ui, -apple-system, sans-serif;
-  }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: linear-gradient(135deg, #111, #000);
+      position: relative;
+      overflow: auto;
+      color: #fff;
+      font-family: Manrope, system-ui, -apple-system, sans-serif;
+    }
 
-  /* 1c) Big frosted-glass overlay for the entire page */
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* Dark translucent overlay color */
-    background: rgba(0, 0, 0, 0.5);
-    /* The blur effect */
-    backdrop-filter: blur(var(--blur-value));
-    -webkit-backdrop-filter: blur(var(--blur-value));
-    z-index: -1; /* push behind all content */
-  }
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(var(--blur-value));
+      -webkit-backdrop-filter: blur(var(--blur-value));
+      z-index: -1;
+    }
 
-  /* ================================
-     2. HEADER (GLASSMORPHISM)
-     ================================ */
-  .header-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    /* Increased to 60px for a more typical header height */
-    height: 60px;
-    z-index: 9999;
-    /* Glassy background + blur */
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(var(--blur-value));
-    -webkit-backdrop-filter: blur(var(--blur-value));
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    /* ================================
+       2. HEADER (GLASSMORPHISM)
+       ================================ */
+    .header-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(var(--blur-value));
+      -webkit-backdrop-filter: blur(var(--blur-value));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
-    /* Flex layout for content alignment */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 0 16px; /* some horizontal padding */
-    box-sizing: border-box;
-  }
-  .header-bar h2 {
-    font-family: Poppins;
-    margin: 0;
-  }
-  .header-bar p {
-    margin: 0;
-  }
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 16px;
+      box-sizing: border-box;
+    }
+    .header-bar h2 {
+      font-family: Poppins;
+      margin: 0;
+    }
+    .header-bar p {
+      margin: 0;
+    }
 
-  /* =========================================
-     3. MAIN CONTAINER & FLEX LAYOUT
-     ========================================= */
-  .main-container {
-    position: absolute;
-    /* Move content below the 60px-high header */
-    top: 60px;
-    left: 0;
-    width: 100%;
-    height: calc(100% - 60px);
-    display: flex;
-    /* Hide horizontal/vertical scroll at container level if desired */
-    overflow: hidden; 
-  }
-
-  /* ================
-     3a) LEFT-VIEW
-     ================ */
-  .left-view {
-    width: 70%;
-    box-sizing: border-box;
-    /* Translucent background + blur for layered glass effect */
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(var(--blur-value));
-    -webkit-backdrop-filter: blur(var(--blur-value));
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
-
-    /* If you want more "frosted" behind tiles, you can do:
-       background: linear-gradient(45deg, #333, #000); */
-
-    padding: 40px;
-    overflow-y: auto;
-    overflow-x: auto;
-
-    /* CUSTOM SCROLLBAR (Firefox and WebKit) */
-    /* For Firefox (scrollbar-width + scrollbar-color) */
-    scrollbar-width: thin; /* "auto" or "thin" */
-    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-
-  }
-  /* For Chrome, Safari, and Edge */
-  .left-view::-webkit-scrollbar {
-    width: 8px; /* Thin width */
-  }
-  .left-view::-webkit-scrollbar-track {
-    background: transparent; /* Invisible track */
-  }
-  .left-view::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-  }
-  .left-view::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
-  }
-
-  /* ================
-     3b) RIGHT-VIEW
-     ================ */
-  .right-view {
-    width: 30%;
-    box-sizing: border-box;
-    /* Same glassy effect */
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(var(--blur-value));
-    -webkit-backdrop-filter: blur(var(--blur-value));
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
-
-    padding: 20px;
-    color: #ddd;
-    overflow-y: auto;
-    overflow-x: auto;
-
-    /* CUSTOM SCROLLBAR for right-view as well */
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-  }
-  .right-view::-webkit-scrollbar {
-    width: 8px;
-  }
-  .right-view::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  .right-view::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-  }
-  .right-view::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
-  }
-
-  /* Specifically requested override: ensure this text size is 16px */
-  .right-view p {
-    font-family: Manrope;
-    font-size: 16px;
-    line-height: 1.5;
-  }
-  .right-view h2 {
-    font-family: Poppins;
-    font-size: 32px;
-    line-height: 1.1; 
-    letter-spacing: -0.03em;
-  } 
-
-  /* ================================
-     4. NEWS GRID & TILES
-     ================================ */
-  .news-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: flex-start; 
-  }
-
-  .news-tile {
-    position: relative;
-    box-sizing: border-box;
-    width: calc((100% - (2 * 30px)) / 3); /* 3 columns on desktop */
-    aspect-ratio: 1 / 1;
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-    overflow: hidden;
-
-    /* Glassy tile background & border */
-    background: rgba(26, 26, 26, 0.4);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    
-    /* If you want to see an accent border: */
-    /* border: 1px solid var(--accent-color); */
-
-    /* Smooth transitions for all hover/active states */
-    transition: all 0.3s ease;
-
-    /* Provide default values for the highlight props */
-    --mouse-x: 50%;
-    --mouse-y: 50%;
-    font-size: clamp(0.6rem, 1vw, 1rem);
-    color: #fff;
-    padding: 24px;
-  }
-
-  /* 4a) Circular highlight that follows the mouse */
-  .news-tile::before {
-    content: "";
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    top: var(--mouse-y);
-    left: var(--mouse-x);
-    border-radius: 50%;
-    /* Adjust gradient to remain subtle on glass */
-    background: radial-gradient(circle, rgba(225, 234, 205, 0.3), transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 1;
-  }
-  .news-tile:hover::before {
-    opacity: 0.3;
-  }
-
-  /* 4b) ACTIVE (Clicked) tile uses accent background, no filter */
-  .news-tile.active {
-    background-color: var(--accent-color);
-    color: #000; /* ensure text is readable on accent */
-    filter: none; /* remove invert/hue rotate if previously used */
-    transition: background-color 0.4s ease, color 0.4s ease;
-    
-    /* Optional: extra blur if you like */
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-color: var(--accent-color);
-  }
-
-  /* Headlines, star icons, fonts */
-  .news-tile .font-pair {
-    font-size: 12px;
-    margin-bottom: 16px;
-    color: rgba(255, 255, 255, 0.6);
-    z-index: 2;
-  }
-  .news-tile .star-icon {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    color: rgba(255, 255, 255, 0.4);
-    z-index: 2;
-  }
-  .news-tile .headline {
-    font-family: Poppins, sans-serif;
-    font-weight: normal;
-    letter-spacing: -0.03em;
-    margin-bottom: 8px;
-    line-height: 1.1;
-    font-size: 2em;
-    z-index: 2;
-  }
-
-  /* Ensure text is readable on glass background */
-  .news-tile .content {
-    position: relative;
-    z-index: 2;
-    font-family: Manrope, sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
-    color: rgba(255, 255, 255, 0.9);
-    flex: 1;
-    overflow: hidden;
-  }
-
-  /* Make sure any text inside the active tile also goes black */
-  .news-tile.active .content,
-  .news-tile.active .star-icon,
-  .news-tile.active .font-pair,
-  .news-tile.active .headline {
-    color: #000;
-  }
-
-  /* ================
-     4c) Fade/Mask effect near the bottom of the tile content
-     ================ */
-  /* Single blur “overlay” */
-  .news-tile .content::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: transparent;
-    pointer-events: none;
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgba(0, 0, 0, 0.8) 20%,
-      black 50%
-    );
-    mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgba(0, 0, 0, 0.8) 20%,
-      black 50%
-    );
-  }
-
-  /* Remove color-based gradient, rely on opacity only in main content */
-  .news-tile .content {
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      black 10%,
-      transparent 100%
-    );
-    mask-image: linear-gradient(
-      to bottom,
-      black 10%,
-      transparent 100%
-    );
-  }
-
-  /* ============================================
-     5. RESPONSIVE ADJUSTMENTS
-     ============================================ */
-  @media (max-width: 1400px) {
+    /* =========================================
+       3. MAIN CONTAINER & FLEX LAYOUT
+       ========================================= */
     .main-container {
-      flex-direction: column;
-      height: auto;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 60px);
+      display: flex;
+      overflow: hidden;
     }
-    .left-view,
+
+    /* ================
+       3a) LEFT-VIEW
+       ================ */
+    .left-view {
+      width: 70%;
+      box-sizing: border-box;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(var(--blur-value));
+      -webkit-backdrop-filter: blur(var(--blur-value));
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+
+      padding: 40px;
+      overflow-y: auto;
+      overflow-x: auto;
+
+      /* CUSTOM SCROLLBAR (Firefox and WebKit) */
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    }
+    .left-view::-webkit-scrollbar {
+      width: 8px;
+    }
+    .left-view::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .left-view::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+    }
+    .left-view::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* ================
+       3b) RIGHT-VIEW
+       ================ */
     .right-view {
-      width: 100%;
-      height: auto;
-      border-right: none;  /* remove vertical divider on small screens */
-      border-left: none;
+      width: 30%;
+      box-sizing: border-box;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(var(--blur-value));
+      -webkit-backdrop-filter: blur(var(--blur-value));
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+
+      padding: 20px;
+      color: #ddd;
+      overflow-y: auto;
+      overflow-x: auto;
+
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
     }
+    .right-view::-webkit-scrollbar {
+      width: 8px;
+    }
+    .right-view::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .right-view::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+    }
+    .right-view::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .right-view p {
+      font-family: Manrope;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .right-view h2 {
+      font-family: Poppins;
+      font-size: 32px;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    /* ================================
+       4. NEWS GRID & TILES
+       ================================ */
+    .news-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: flex-start;
+    }
+
     .news-tile {
-      width: calc((100% - 24px) / 2);
-    }
-  }
+      position: relative;
+      box-sizing: border-box;
+      width: calc((100% - (2 * 30px)) / 3);
+      aspect-ratio: 1 / 1;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      overflow: hidden;
+      background: rgba(26, 26, 26, 0.4);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
-  @media (max-width: 480px) {
-    .news-tile {
-      width: 100%;
+      transition: all 0.3s ease;
+      --mouse-x: 50%;
+      --mouse-y: 50%;
+      font-size: clamp(0.6rem, 1vw, 1rem);
+      color: #fff;
+      padding: 24px;
     }
-  }
-  /* A blinking cursor, used for the typed text. */
-  .typed-content {
-    /* Ensure we have a monospace feel if you want that true "terminal" vibe */
-	      font-family: Manrope;
-    font-size: 16px;
-    line-height: 1.5;
-    position: relative;
-    white-space: pre-wrap; /* so we keep line breaks from <pre> */
-  }
 
-  /* The blinking block/caret */
-  .typed-content::after {
-    content: "";
-    display: inline-block;
-    width: 8px;
-    height: 1.2em; /* roughly matches text height */
-    background: #fff;
-    margin-left: 4px;
-    vertical-align: bottom;
-    animation: blink-caret 0.8s infinite;
-  }
-
-  @keyframes blink-caret {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
+    .news-tile::before {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      top: var(--mouse-y);
+      left: var(--mouse-x);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(225, 234, 205, 0.3), transparent 70%);
       opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1;
     }
-  }
-	/* Place this at the bottom of your CSS (after existing rules) */
+    .news-tile:hover::before {
+      opacity: 0.3;
+    }
 
-/* The overlay that covers the entire right-view at first */
-.blur-reveal-overlay {
-  position: absolute;
-  top: 0; 
-  left: 0;
-  width: 100%;
-  height: 100%;
+    .news-tile.active {
+      background-color: var(--accent-color);
+      color: #000;
+      filter: none;
+      transition: background-color 0.4s ease, color 0.4s ease;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-color: var(--accent-color);
+    }
+    .news-tile.active .content,
+    .news-tile.active .star-icon,
+    .news-tile.active .font-pair,
+    .news-tile.active .headline {
+      color: #000;
+    }
 
-  /* Same glassy effect as your tiles */
-  background: rgba(26, 26, 26, 0.4);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+    .news-tile .font-pair {
+      font-size: 16px;
+      margin-bottom: 16px;
+      color: rgba(255, 255, 255, 0.6);
+      z-index: 2;
+    }
+    .news-tile .star-icon {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      color: rgba(255, 255, 255, 0.4);
+      z-index: 2;
+    }
+    .news-tile .headline {
+      font-family: Poppins, sans-serif;
+      font-weight: normal;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+      line-height: 1.1;
+      font-size: 2em;
+      z-index: 2;
+    }
 
-  /* So clicks pass through (optional) */
-  pointer-events: none;
-  z-index: 99; /* above article content but below the header bar */
+    .news-tile .content {
+      position: relative;
+      z-index: 2;
+      font-family: Manrope, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.9);
+      flex: 1;
+      overflow: hidden;
+    }
 
-  /* Slide-out animation (left -> right). 
-     After finishing, 'forwards' keeps the final state (out of sight). */
-  animation: blurRevealSlide 1.2s ease-in-out forwards;
-}
+    .news-tile .content::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: transparent;
+      pointer-events: none;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.8) 20%,
+        black 50%
+      );
+      mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.8) 20%,
+        black 50%
+      );
+    }
+    .news-tile .content {
+      -webkit-mask-image: linear-gradient(
+        to bottom,
+        black 10%,
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        to bottom,
+        black 10%,
+        transparent 100%
+      );
+    }
 
+    /* ============================================
+       5. RESPONSIVE ADJUSTMENTS
+       ============================================ */
+    @media (max-width: 1400px) {
+      .main-container {
+        flex-direction: column;
+        height: auto;
+      }
+      .left-view,
+      .right-view {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-left: none;
+      }
+      .news-tile {
+        width: calc((100% - 24px) / 2);
+      }
+    }
 
-@keyframes blurRevealSlide {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
-}
+    @media (max-width: 480px) {
+      .news-tile {
+        width: 100%;
+      }
+    }
 
-</style>
+    /* A blinking cursor, used for typed text if needed */
+    .typed-content {
+      font-family: Manrope;
+      font-size: 16px;
+      line-height: 1.5;
+      position: relative;
+      white-space: pre-wrap;
+    }
+    .typed-content::after {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 1.2em;
+      background: #fff;
+      margin-left: 4px;
+      vertical-align: bottom;
+      animation: blink-caret 0.8s infinite;
+    }
+    @keyframes blink-caret {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
 
-<script>
-  function handleTileClick(tile) {
-    // 1) Remove "active" from all tiles so only the newly clicked tile is 'active'
-    const allTiles = document.querySelectorAll(".news-tile");
-    allTiles.forEach(t => t.classList.remove("active"));
+    /* Overlay that covers right-view at first */
+    .blur-reveal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(26, 26, 26, 0.4);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      pointer-events: none;
+      z-index: 99;
+      animation: blurRevealSlide 1.2s ease-in-out forwards;
+    }
+    @keyframes blurRevealSlide {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+  </style>
 
-    // 2) Add "active" to the clicked tile
-    tile.classList.add("active");
+  <!-- ==========================
+       JAVASCRIPT
+       ========================== -->
+  <script>
+    // 1) When a tile is clicked, fetch its 'data-file' HTML, insert into right-view
+    function handleTileClick(tile) {
+      // Remove "active" from all tiles, add to the clicked tile
+      const allTiles = document.querySelectorAll(".news-tile");
+      allTiles.forEach(t => t.classList.remove("active"));
+      tile.classList.add("active");
 
-    // 3) Grab text from the tile’s .headline + .content
-    const headlineText = tile.querySelector(".headline").innerText;
-    const fullText = tile.querySelector(".content").innerHTML;
+      // Identify which file to load (from data-file attribute)
+      const fileToLoad = tile.getAttribute("data-file");
+      if (!fileToLoad) {
+        console.warn("No data-file attribute found on tile:", tile);
+        return;
+      }
 
-    // 4) Populate the right-view with new content
-    const reader = document.querySelector(".right-view");
-    reader.innerHTML = `
-      <div class='article-reader'>
-        <h2 class="headline">${headlineText}</h2>
-        ${fullText}
-      </div>
-    `;
+      // Fetch the external HTML file
+      fetch(fileToLoad)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Failed to load ${fileToLoad}: ${response.status}`);
+          }
+          return response.text();
+        })
+        .then(htmlContent => {
+          // Insert that HTML into the .right-view
+          const rightView = document.querySelector(".right-view");
+          rightView.innerHTML = htmlContent;
 
-    // 5) Create the blur overlay and append it above the new article
-    const overlay = document.createElement("div");
-    overlay.classList.add("blur-reveal-overlay");
+          // Add the blur overlay effect
+          const overlay = document.createElement("div");
+          overlay.classList.add("blur-reveal-overlay");
+          rightView.appendChild(overlay);
 
-    // Insert the overlay into the right-view (same container as the article)
-    // so it fully covers the article while the animation runs.
-    reader.appendChild(overlay);
+          // Remove overlay after animation
+          overlay.addEventListener("animationend", () => overlay.remove());
+        })
+        .catch(error => {
+          console.error("Error loading tile file:", error);
+        });
+    }
 
-    // 6) Once the animation finishes, remove the overlay from the DOM
-    overlay.addEventListener("animationend", () => {
-      overlay.remove();
-    });
-  }
-
-  // Keep your existing mousemove highlight logic, etc.
-  function attachMouseMoveListeners() {
-    const tiles = document.querySelectorAll(".news-tile");
-    tiles.forEach(tile => {
-      tile.addEventListener("mousemove", (e) => {
-        const rect = tile.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        tile.style.setProperty("--mouse-x", x + "px");
-        tile.style.setProperty("--mouse-y", y + "px");
+    // 2) Mousemove highlight logic
+    function attachMouseMoveListeners() {
+      const tiles = document.querySelectorAll(".news-tile");
+      tiles.forEach(tile => {
+        tile.addEventListener("mousemove", (e) => {
+          const rect = tile.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          tile.style.setProperty("--mouse-x", x + "px");
+          tile.style.setProperty("--mouse-y", y + "px");
+        });
       });
-    });
-  }
+    }
 
-  document.addEventListener("DOMContentLoaded", attachMouseMoveListeners);
-</script>
-
-
+    document.addEventListener("DOMContentLoaded", attachMouseMoveListeners);
+  </script>
 </head>
-<body>
 
+<body>
   <!-- Fixed header bar -->
   <div class="header-bar">
-    <p>This informative content is brought forth by our generous sponsor</p> 
+    <p>This informative content is brought forth by our generous sponsor</p>
     <h2>Yisu Fang</h2>
   </div>
 
-  <!-- Main container below the fixed header, holding left and right views -->
+  <!-- Main container -->
   <div class="main-container">
-
+    <!-- LEFT VIEW: TILES -->
     <div class="left-view">
       <div class="news-grid">
-        
-        <!-- 1) SINGLE PLACE for the text: .content is truncated by natural 
-                overflow (no line clamp), but the full text is shown on click. -->
-        <div class="news-tile" onclick="handleTileClick(this)">
+
+        <!-- Tile #1 references tile_1.html -->
+        <div class="news-tile" data-file="tile_1.html" onclick="handleTileClick(this)">
           <div class="font-pair">Personal Statement</div>
-          <div class="star-icon">★</div>
-          <h2 class="headline">Meet the Man Behind His Own Website</h2>
-          <p class="content">
-Hello there! I’m Yisu Fang—a robotics engineer, IoT specialist, and, most recently, the creative mind behind this very website. If you’re here, you’ve probably come across my work in robotics, artificial intelligence, or IoT. Or perhaps you just wanted to meet the person who turned his CV into a newsworthy website. Either way, welcome!
-A Foundation of Curiosity
-
-My academic journey began with a BEng in Internet of Things Engineering with Contemporary Entrepreneurialism from Xi’an Jiaotong-Liverpool University (XJTLU), awarded by the University of Liverpool. Graduating with First Class Honours, I combined a passion for technology with an entrepreneurial mindset.
-
-Fast forward to today, I’m pursuing an MSc in Robotics at the University of Birmingham, where I’m diving deep into autonomous systems, AI-powered decision-making, and IoT integration.
-The Work I’m Proud Of
-
-I thrive on solving real-world challenges with innovative solutions. From developing an autonomous irrigation robot powered by ROS2 and YOLOv8 to creating a secure, distributed robotic control system with AES-encrypted ESP32 wireless mesh networks, I’ve built projects that bridge cutting-edge technology and practical applications.
-
-My work often finds its way into academic circles, with publications at esteemed conferences like ICiMR and IEEE SmartIoT. Highlights include designing SLAM-based robotic navigation systems and crafting NLP-powered robots that understand and execute multilingual voice commands.
-The Skillset That Drives Me
-
-Behind every project is a diverse skill set: proficiency in ROS2, SLAM, Python, embedded systems, and AI algorithms, to name a few. Whether it’s optimizing machine vision algorithms or developing IoT applications, my aim is always to push boundaries while maintaining a focus on real-world impact.
-Outside the Lab
-
-You might find me tinkering with DIY robotics projects, creating concept art in Unreal Engine 5, or contemplating the retrofuturist aesthetics of a reimagined Roman Empire. (Yes, I dabble in world-building for video games, too!)
-Why This Website?
-
-This website is more than a portfolio; it’s a glimpse into how I think and work. The same creativity and precision that brought you this article guide my approach to research and innovation.
-
-So, whether you’re a prospective supervisor, collaborator, or someone intrigued by the fusion of tech and storytelling, feel free to explore. And if you’d like to connect, my inbox is always open.
-          </p>
+          <div class="star-icon">
+            <!-- Icon or placeholder -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+	<path fill="#A0A0A0" d="M17 3h-3v2h3v16H7V5h3V3H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-5 4a2 2 0 0 1 2 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2a2 2 0 0 1 2-2m4 8H8v-1c0-1.33 2.67-2 4-2s4 .67 4 2zm0 3H8v-1h8zm-4 2H8v-1h4zm1-15h-2V1h2z" />
+</svg>
+          </div>
+          <!-- Minimal placeholder text, real content will come from tile_1.html -->
+          <h2 class="headline">Click to Load tile_1.html</h2>
+          <p class="content">Placeholder</p>
         </div>
 
-        <div class="news-tile" onclick="handleTileClick(this)">
+        <!-- Tile #2 references tile_2.html -->
+        <div class="news-tile" data-file="tile_2.html" onclick="handleTileClick(this)">
           <div class="font-pair">Education</div>
-          <div class="star-icon">★</div>
-          <h2 class="headline">First Class Engineer-<br>ing Degree</h2>
-          <p class="content">
-What’s in a degree? For me, it’s more than a piece of paper or a line on my CV. It’s a journey filled with discovery, challenges, and the occasional late-night debugging session. But let’s not get ahead of ourselves—let’s start at the beginning.
-The Beginning of Engineering Excellence
-
-I earned my BEng in Internet of Things Engineering with Contemporary Entrepreneurialism from Xi’an Jiaotong-Liverpool University (XJTLU), an academic powerhouse affiliated with the University of Liverpool. Graduating with First Class Honours wasn’t just about acing exams; it was about immersing myself in the principles of IoT, diving headfirst into entrepreneurship, and learning to bridge the gap between technical know-how and practical application.
-What Set This Degree Apart
-
-Here’s the thing about IoT: it’s not just about sensors and servers; it’s about creating intelligent systems that talk to each other—and, more importantly, to us. Throughout my degree, I tackled challenges that tested my skills and stretched my creativity. I designed embedded systems, engineered wireless communication protocols, and delved into data security, all while fostering a strong entrepreneurial mindset.
-
-And the entrepreneurial aspect wasn’t just theoretical. Whether it was pitching ideas for smart systems or collaborating on IoT-based solutions, I developed a knack for thinking beyond the code—toward innovation, impact, and scalability.
-Highlights Worth Mentioning
-
-    Developed autonomous systems that blended robotics, AI, and IoT.
-    Designed machine vision defect detection systems as part of my capstone projects.
-    Pushed the limits of wireless mesh networking for secure and distributed robotics applications.
-    Earned the Best Final Year Project Award for my autonomous houseplant irrigation robot.
-
-Where It’s Taken Me
-
-This “first class” engineer-ing degree set the stage for my current pursuits: an MSc in Robotics at the University of Birmingham, where I’m exploring the integration of SLAM, ROS2, and AI-powered decision-making for autonomous systems. It also laid the foundation for my publications at prestigious conferences like ICIMR and IEEE SmartIoT, where I continue to blend cutting-edge tech with practical innovation.
-A Degree Worth a Punchline
-
-So, why the cheeky headline? It’s my way of celebrating a degree that’s more than a credential—it’s a testament to hard work, curiosity, and the desire to create solutions that matter. And if I can inject a bit of humor into describing it, that’s just the engineer-(newline)-ing spirit at work.
-          </p>
+          <div class="star-icon">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+	<path fill="#A0A0A0" d="M6.05 17.775q-.5-.275-.775-.737T5 16v-4.8L2.6 9.875q-.275-.15-.4-.375T2.075 9t.125-.5t.4-.375l8.45-4.6q.225-.125.463-.188T12 3.275t.488.063t.462.187l9.525 5.2q.25.125.388.363T23 9.6V16q0 .425-.288.713T22 17t-.712-.288T21 16v-5.9l-2 1.1V16q0 .575-.275 1.038t-.775.737l-5 2.7q-.225.125-.462.188t-.488.062t-.488-.062t-.462-.188zM12 12.7L18.85 9L12 5.3L5.15 9zm0 6.025l5-2.7V12.25l-4.025 2.225q-.225.125-.475.188t-.5.062t-.5-.062t-.475-.188L7 12.25v3.775zm0-3" />
+</svg>
+			</div>
+          <h2 class="headline">Click to Load tile_2.html</h2>
+          <p class="content">Placeholder</p>
         </div>
 
-        <div class="news-tile" onclick="handleTileClick(this)">
+        <!-- Additional Tiles: tile_3.html, tile_4.html, etc. -->
+        <div class="news-tile" data-file="tile_3.html" onclick="handleTileClick(this)">
           <div class="font-pair">Publication</div>
-          <div class="star-icon">★</div>
-          <h2 class="headline">Sequel to My First IEEE Conference: My Second IEEE Conference</h2>
-          <p class="content">
-            This scene from the north wall of Medinet Habu is often used to illustrate the Egyptian campaign against the Sea Peoples, in what has come to be known as the Battle of the Delta (c. 1175 BC), during the reign of Ramesses III. While accompanying hieroglyphs do not name Egypt's enemies, describing them simply as being from "northern countries", early scholars noted the similarities between the hairstyles and accessories worn by the combatants and other reliefs in which such groups are named.
-          </p>
+          <div class="star-icon">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+	<g fill="none" stroke="#A0A0A0" stroke-width="2">
+		<path d="M18 3a3 3 0 0 1 3 3v2.143c0 .334 0 .501-.077.623a.5.5 0 0 1-.157.157C20.644 9 20.477 9 20.143 9H15m3-6a3 3 0 0 0-3 3v3m3-6H7c-1.886 0-2.828 0-3.414.586S3 5.114 3 7v14l3-1l3 1l3-1l3 1V9" />
+		<path stroke-linecap="round" d="M7 7h4m-3 4H7m0 4h3" />
+	</g>
+</svg>
+			</div>
+          <h2 class="headline">Click to Load tile_3.html</h2>
+          <p class="content">Placeholder</p>
         </div>
 
-        <div class="news-tile" onclick="handleTileClick(this)">
-          <div class="font-pair">Roboto Bold + Lato Regular</div>
-          <div class="star-icon">★</div>
-          <h2 class="headline">Tile 4</h2>
-          <p class="content">
-            Content 4
-          </p>
+        <div class="news-tile" data-file="tile_4.html" onclick="handleTileClick(this)">
+          <div class="font-pair">Projects</div>
+          <div class="star-icon">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+	<path fill="#A0A0A0" d="M17.5 15.5c0 1.11-.89 2-2 2s-2-.89-2-2s.9-2 2-2s2 .9 2 2m-9-2c-1.1 0-2 .9-2 2s.9 2 2 2s2-.89 2-2s-.89-2-2-2M23 15v3c0 .55-.45 1-1 1h-1v1c0 1.11-.89 2-2 2H5a2 2 0 0 1-2-2v-1H2c-.55 0-1-.45-1-1v-3c0-.55.45-1 1-1h1c0-3.87 3.13-7 7-7h1V5.73c-.6-.34-1-.99-1-1.73c0-1.1.9-2 2-2s2 .9 2 2c0 .74-.4 1.39-1 1.73V7h1c3.87 0 7 3.13 7 7h1c.55 0 1 .45 1 1m-2 1h-2v-2c0-2.76-2.24-5-5-5h-4c-2.76 0-5 2.24-5 5v2H3v1h2v3h14v-3h2z" />
+</svg>
+			</div>
+          <h2 class="headline">Click to Load tile_4.html</h2>
+          <p class="content">Placeholder</p>
         </div>
 
-        <div class="news-tile" onclick="handleTileClick(this)">
+        <div class="news-tile" data-file="tile_5.html" onclick="handleTileClick(this)">
           <div class="font-pair">Contact Me</div>
-          <div class="star-icon">★</div>
-          <h2 class="headline">Get a Limited Copy of My CV Today For Free</h2>
-          <p class="content">
-            Content 5
-          </p>
+          <div class="star-icon">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 20 20">
+	<g fill="#A0A0A0">
+		<path d="M7.8 6.35c.56 0 1.01-.45 1.01-1.01S8.36 4.33 7.8 4.33s-1.01.45-1.01 1.01s.45 1.01 1.01 1.01" />
+		<path fill-rule="evenodd" d="M9.83 8.55c0-1.08-.91-1.86-2.03-1.86s-2.03.78-2.03 1.86v.51c0 .09.04.18.1.24s.15.1.24.1h3.38c.09 0 .18-.04.24-.1s.1-.15.1-.24zM5.75 11.5a.75.75 0 0 1 .75-.75h7a.75.75 0 0 1 0 1.5h-7a.75.75 0 0 1-.75-.75m0 3a.75.75 0 0 1 .75-.75h7a.75.75 0 0 1 0 1.5h-7a.75.75 0 0 1-.75-.75" clip-rule="evenodd" />
+		<path fill-rule="evenodd" d="M2.5 2.5c0-1.102.898-2 2-2h6.69c.562 0 1.092.238 1.465.631l.006.007l4.312 4.702c.359.383.527.884.527 1.36v10.3c0 1.102-.898 2-2 2h-11c-1.102 0-2-.898-2-2zm8.689 0H4.5v15h11V7.192l-4.296-4.685l-.003-.001z" clip-rule="evenodd" />
+		<path fill-rule="evenodd" d="M11.19.5a1 1 0 0 1 1 1v4.7h4.31a1 1 0 1 1 0 2h-5.31a1 1 0 0 1-1-1V1.5a1 1 0 0 1 1-1" clip-rule="evenodd" />
+	</g>
+</svg>
+			</div>
+          <h2 class="headline">Click to Load tile_5.html</h2>
+          <p class="content">Placeholder</p>
         </div>
 
-        <div class="news-tile" onclick="handleTileClick(this)">
-          <div class="font-pair">Roboto Bold + Lato Regular</div>
-          <div class="star-icon">★</div>
-          <h2 class="headline">Tile 4</h2>
-          <p class="content">
-            Content 4
-          </p>
-        </div>
-
-        <div class="news-tile" onclick="handleTileClick(this)">
-          <div class="font-pair">Roboto Bold + Lato Regular</div>
-          <div class="star-icon">★</div>
-          <h2 class="headline">Tile 4</h2>
-          <p class="content">
-            Content 4
-          </p>
-        </div>
-
-        <div class="news-tile" onclick="handleTileClick(this)">
-          <div class="font-pair">Roboto Bold + Lato Regular</div>
-          <div class="star-icon">★</div>
-          <h2 class="headline">Tile 4</h2>
-          <p class="content">
-            Content 4
-          </p>
-        </div>
-
+        <!-- Add as many tiles as you want -->
       </div><!-- .news-grid -->
     </div><!-- .left-view -->
 
+    <!-- RIGHT VIEW: DYNAMIC CONTENT -->
     <div class="right-view">
       <div class="article-reader">
-        Click a tile to view detailed content.
+        Click a tile to load external content.
       </div>
     </div><!-- .right-view -->
-
   </div><!-- .main-container -->
 </body>
 </html>
