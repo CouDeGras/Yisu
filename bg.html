@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Topography Animation</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #222;
+      color: #ddd;
+    }
+    #app {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .graphic-container {
+      position: relative;
+      margin: 0 auto;
+    }
+    .graphic-container canvas,
+    .graphic-container svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <edge-graphic :width="options.width" :height="options.height"></edge-graphic>
+</div>
+
+<!-- 1) Include Vue.js -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
+<!-- 2) Include glMatrix -->
+<script src="https://cdn.jsdelivr.net/npm/gl-matrix@3.4.3/dist/gl-matrix-min.js"></script>
+<script>
+  const mat4 = glMatrix.mat4; // shorthand
+
+  // 3) The Render Utils
+  const RenderUtils = {
+    shaders: {
+      vertex: `
+attribute vec3 aVertexPosition;
+uniform mat4 uMVMatrix;
+uniform mat4 uPMatrix;
+
+void main(void) {
+  gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+}
+      `,
+      noise: `
+precision mediump float;
+uniform vec3 iResolution;
+uniform float iGlobalTime;
+
+// ... Full noise shader code ...
+void main() {
+  // For example, do a gradient:
+  vec2 uv = gl_FragCoord.xy / iResolution.xy;
+  float color = 0.5 + 0.5 * sin(iGlobalTime + uv.x * 10.0);
+  gl_FragColor = vec4(vec3(color), 1.0);
+}
+      `,
+      edge: `
+precision mediump float;
+uniform vec3 iResolution;
+uniform float iGlobalTime;
+uniform sampler2D iChannel0;
+
+// ... Full edge-detection code ...
+void main() {
+  vec2 uv = gl_FragCoord.xy / iResolution.xy;
+  vec3 tex = texture2D(iChannel0, uv).xyz;
+  // Simple pass-through for demonstration
+  gl_FragColor = vec4(tex, 1.0);
+}
+      `
+    },
+
+    render(canvas, updateUniformsCallback) {
+      const gl = canvas.getContext('webgl');
+      const { width, height } = canvas;
+      // Basic checks
+      if (!gl) {
+        console.error("WebGL not supported");
+        return;
+      }
+      gl.viewport(0, 0, width, height);
+      gl.clearColor(0, 0, 0, 1);
+      // ... create programs, framebuffers, uniforms, etc. ...
+      
+      // 1) Compile Vertex shader
+      const vShader = this._compileShader(gl, this.shaders.vertex, gl.VERTEX_SHADER);
+
+      // 2) Compile "noise" fragment shader
+      const noiseShader = this._compileShader(gl, this.shaders.noise, gl.FRAGMENT_SHADER);
+      const noiseProgram = this._createProgram(gl, vShader, noiseShader);
+
+      // 3) Compile "edge" fragment shader
+      const edgeShader = this._compileShader(gl, this.shaders.edge, gl.FRAGMENT_SHADER);
+      const edgeProgram = this._createProgram(gl, vShader, edgeShader);
+      
+      // ... set up buffers, textures, etc. ...
+      // ... set up uniform locations, etc. ...
+
+      // Animation loop
+      let uniforms = updateUniformsCallback();
+      const loop = () => {
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+        // 1) Draw noise to an offscreen texture
+        // ...
+        
+        // 2) Draw edge detection sampling that texture
+        // ...
+
+        uniforms = updateUniformsCallback();
+        requestAnimationFrame(loop);
+      };
+      loop();
+    },
+
+    // Helper to compile a shader
+    _compileShader(gl, source, type) {
+      const shader = gl.createShader(type);
+      gl.shaderSource(shader, source);
+      gl.compileShader(shader);
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        console.error('Shader Error:', gl.getShaderInfoLog(shader));
+        gl.deleteShader(shader);
+      }
+      return shader;
+    },
+    // Helper to link program
+    _createProgram(gl, vShader, fShader) {
+      const program = gl.createProgram();
+      gl.attachShader(program, vShader);
+      gl.attachShader(program, fShader);
+      gl.linkProgram(program);
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        console.error('Program Error:', gl.getProgramInfoLog(program));
+        gl.deleteProgram(program);
+      }
+      return program;
+    }
+  };
+
+  // 4) Vue component
+  Vue.component('edge-graphic', {
+    template: `
+      <div>
+        <div class="graphic-container" :style="{ width: width + 'px', height: height + 'px' }">
+          <canvas :width="width" :height="height"
+                  :style="{ width: width + 'px', height: height + 'px' }"></canvas>
+          <svg :width="width" :height="height">
+            <path d="M50,5 95,97.5 5,97.5 z" :transform="transform(p)"
+                  fill="red" fill-opacity="0.8" v-for="p in points"/>
+          </svg>
+        </div>
+        <div>
+          <label>Time: </label>
+          <input type="text" :value="uniforms.time.toFixed(1)" readonly>
+        </div>
+      </div>
+    `,
+    props: ['width', 'height'],
+    data() {
+      return {
+        points: [
+          { x: 0.1 * this.width, y: 0.1 * this.height, dx: 1, dy: -1 },
+          { x: 0.5 * this.width, y: 0.25 * this.height, dx: 0.5, dy: 2 },
+          { x: 0.9 * this.width, y: 0.4 * this.height, dx: 0.25, dy: -1 },
+          { x: 0.4 * this.width, y: 0.9 * this.height, dx: -0.3, dy: 0.5 },
+          { x: 0.6 * this.width, y: 0.5 * this.height, dx: 0, dy: 0 }
+        ],
+        uniforms: {
+          time: 0,
+          // ... other uniforms ...
+        }
+      };
+    },
+    mounted() {
+      // Kick off rendering
+      RenderUtils.render(this.$el.querySelector('canvas'), this.tick);
+    },
+    methods: {
+      transform(p) {
+        return `translate(${p.x},${p.y}) scale(0.1)`;
+      },
+      tick: () => {
+        // Because we're outside the Vue instance's scope, use an arrow function or bind(this).
+        this.uniforms.time += 0.1;
+        this.points.forEach(p => {
+          p.x += 0.1 * p.dx;
+          p.y += 0.1 * p.dy;
+          if (p.x > this.width) p.x = 0;
+          if (p.y > this.height) p.y = 0;
+          if (p.x < 0) p.x = this.width;
+          if (p.y < 0) p.y = this.height;
+        });
+        return this.uniforms;
+      }
+    }
+  });
+
+  // 5) Vue instance
+  new Vue({
+    el: '#app',
+    data: {
+      options: {
+        width: window.innerWidth,
+        height: window.innerHeight
+      }
+    }
+  });
+</script>
+</body>
+</html>
