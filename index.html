@@ -25,12 +25,13 @@
   1. GLOBAL VARIABLES & BASE STYLING
 ******************************************/
 :root {
-  --accent-color: #e1eacd;   /* same highlight color */
-  --blur-value: 12px;        /* keep original blur */
+  --accent-color: #6f6cde;    /* Example accent; adjust as desired */
+  --blur-value: 12px;         /* Retain the blur intensity */
   
-  /* For Neumorphic-like shadows on a dark backdrop */
-  --shadow-dark: rgba(0, 0, 0, 0.5);
-  --shadow-light: rgba(255, 255, 255, 0.07);
+  /* For light Neumorphism shadows */
+  --shadow-light: #ffffff;    /* Highlight edge */
+  --shadow-dark: #d1d1d1;     /* Deeper shadow */
+  
   --corner-radius: 16px;
 }
 
@@ -39,15 +40,18 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  /* Keep the original black gradient background */
-  background: linear-gradient(135deg, #111, #000);
-  position: relative;
-  overflow: auto;
-  color: #fff;
+  
+  /* Light, soft gradient or plain background */
+  background: linear-gradient(135deg, #f0f0f3, #ffffff);
+  
+  /* Instead of black, we use neutral or pastel for text */
+  color: #333;  
   font-family: Manrope, system-ui, -apple-system, sans-serif;
+  overflow: auto;
+  position: relative;
 }
 
-/* Dark overlay + blur behind all content (original glass effect) */
+/* Light overlay + blur behind all content */
 body::before {
   content: "";
   position: fixed;
@@ -55,14 +59,15 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);  /* same black overlay */
+  /* White-based overlay for the glass effect */
+  background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(var(--blur-value));
   -webkit-backdrop-filter: blur(var(--blur-value));
   z-index: -1;
 }
 
 /*****************************************
-  2. HEADER BAR (Glass + Subtle Neumorph)
+  2. HEADER BAR (Glass + Soft Neumorph)
 ******************************************/
 .header-bar {
   position: fixed;
@@ -71,14 +76,14 @@ body::before {
   width: 100%;
   height: 60px;
   z-index: 9999;
-
-  /* Keep the glass background */
-  background: rgba(0, 0, 0, 0.3);
+  
+  /* Glassy background on light theme */
+  background: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(var(--blur-value));
   -webkit-backdrop-filter: blur(var(--blur-value));
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
-  /* Add a subtle outer "Neumorph" style shadow */
+  /* Soft Neumorphic shadows around the header */
   box-shadow:
     -4px -4px 8px var(--shadow-light),
     4px 4px 8px var(--shadow-dark);
@@ -90,12 +95,17 @@ body::before {
   padding: 0 16px;
   box-sizing: border-box;
 }
+
 .header-bar h2 {
   font-family: Poppins, sans-serif;
   margin: 0;
+  font-weight: 700;
+  color: #333;
 }
+
 .header-bar p {
   margin: 0;
+  color: #555;
 }
 
 /*****************************************
@@ -115,24 +125,25 @@ body::before {
 .left-view {
   width: 64%;
   box-sizing: border-box;
-  /* Keep the glass look */
-  background: rgba(0, 0, 0, 0.2);
+  
+  /* Glass with a white base */
+  background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(var(--blur-value));
   -webkit-backdrop-filter: blur(var(--blur-value));
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-
-  /* Add subtle outer shadows for a “raised panel” feel */
+  
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  
+  /* Subtle inset shadow to give it a “panel” feel */
   box-shadow:
-    inset -2px -2px 4px rgba(255, 255, 255, 0.05),
-    inset 2px 2px 4px rgba(0, 0, 0, 0.4);
+    inset -2px -2px 4px rgba(255, 255, 255, 0.8),
+    inset 2px 2px 4px rgba(0, 0, 0, 0.1);
 
   padding: 40px;
   overflow-y: auto;
   overflow-x: auto;
 
-  /* Keep scrollbar styles */
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 .left-view::-webkit-scrollbar {
   width: 8px;
@@ -141,36 +152,37 @@ body::before {
   background: transparent;
 }
 .left-view::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 }
 .left-view::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 /* ================ 3b) RIGHT-VIEW ================ */
 .right-view {
   width: 36%;
   box-sizing: border-box;
-  /* Keep the glass look */
-  background: rgba(0, 0, 0, 0.2);
+  
+  /* Same glassy approach */
+  background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(var(--blur-value));
   -webkit-backdrop-filter: blur(var(--blur-value));
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
-
-  /* Subtle inset for “panel” effect */
+  
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  
+  /* Inset panel effect */
   box-shadow:
-    inset -2px -2px 4px rgba(255, 255, 255, 0.05),
-    inset 2px 2px 4px rgba(0, 0, 0, 0.4);
+    inset -2px -2px 4px rgba(255, 255, 255, 0.8),
+    inset 2px 2px 4px rgba(0, 0, 0, 0.1);
 
   padding: 20px;
-  color: #ddd;
+  color: #555;
   overflow-y: auto;
   overflow-x: auto;
 
-  /* Keep scrollbar styles */
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 .right-view::-webkit-scrollbar {
   width: 8px;
@@ -179,22 +191,24 @@ body::before {
   background: transparent;
 }
 .right-view::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 }
 .right-view::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.3);
 }
 .right-view p {
   font-family: Manrope;
   font-size: 16px;
   line-height: 1.5;
+  color: #333;
 }
 .right-view h2 {
   font-family: Poppins;
   font-size: 32px;
   line-height: 1.1;
   letter-spacing: -0.03em;
+  color: #333;
 }
 
 /*****************************************
@@ -217,14 +231,15 @@ body::before {
   cursor: pointer;
   overflow: hidden;
 
-  /* Keep your glass background & blur, but add Neumorph shadows */
-  background: rgba(26, 26, 26, 0.4);
+  /* Glass with a white base */
+  background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: var(--corner-radius);
 
-  /* Neumorphic shadows: subtle outer + a bit heavier */
+  /* Neumorphic shadows around the tile */
   box-shadow:
     -6px -6px 10px var(--shadow-light),
     6px 6px 10px var(--shadow-dark);
@@ -233,11 +248,11 @@ body::before {
   --mouse-x: 50%;
   --mouse-y: 50%;
   font-size: clamp(0.6rem, 1vw, 1rem);
-  color: #fff;
+  color: #333;
   padding: 24px;
 }
 
-/* Light radial highlight on hover (kept from original) */
+/* Radial glow on hover (from your original) */
 .news-tile::before {
   content: "";
   position: absolute;
@@ -248,7 +263,7 @@ body::before {
   top: var(--mouse-y);
   left: var(--mouse-x);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(225, 234, 205, 0.3), transparent 70%);
+  background: radial-gradient(circle, var(--accent-color) 20%, transparent 70%);
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: 1;
@@ -257,37 +272,39 @@ body::before {
   opacity: 0.3;
 }
 
-/* “Pressed in” effect on active state */
+/* “Pressed in” effect on active/pressed */
 .news-tile.active,
 .news-tile:active {
   box-shadow:
     inset -4px -4px 8px var(--shadow-light),
     inset 4px 4px 8px var(--shadow-dark);
+  
+  /* If you want a color shift on click, you can use accent color */
   background-color: var(--accent-color);
-  color: #000;
+  color: #fff;
   border-color: var(--accent-color);
 }
 
-/* Children color when active */
+/* Children color shift when active */
 .news-tile.active .content,
 .news-tile.active .star-icon,
 .news-tile.active .font-pair,
 .news-tile.active .headline {
-  color: #000;
+  color: #fff;
 }
 
-/* Tile text specifics */
+/* Inner tile text styling */
 .news-tile .font-pair {
   font-size: 16px;
   margin-bottom: 16px;
-  color: rgba(255, 255, 255, 0.6);
+  color: #666;
   z-index: 2;
 }
 .news-tile .star-icon {
   position: absolute;
   top: 24px;
   right: 24px;
-  color: rgba(255, 255, 255, 0.4);
+  color: #888; 
   z-index: 2;
 }
 .news-tile .headline {
@@ -297,6 +314,7 @@ body::before {
   margin-bottom: 8px;
   line-height: 1.1;
   font-size: 2em;
+  color: #333;
   z-index: 2;
 }
 .news-tile .content {
@@ -305,12 +323,12 @@ body::before {
   font-family: Manrope, sans-serif;
   font-size: 16px;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.9);
+  color: #444;
   flex: 1;
   overflow: hidden;
 }
 
-/* The partial text mask from original code */
+/* Keep your partial text masking effect */
 .news-tile .content::after {
   content: '';
   position: absolute;
@@ -372,7 +390,7 @@ body::before {
 }
 
 /*****************************************
-  6. EXTRAS: BLUR REVEAL OVERLAY, ETC.
+  6. OVERLAYS, TYPED CURSOR, ETC.
 ******************************************/
 .blur-reveal-overlay {
   position: absolute;
@@ -380,7 +398,8 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(26, 26, 26, 0.4);
+  /* Light-based overlay for reveal animation */
+  background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   pointer-events: none;
@@ -392,20 +411,21 @@ body::before {
   100% { opacity: 0; }
 }
 
-/* Typed text cursor (optional) */
+/* Typed text cursor (unchanged) */
 .typed-content {
   font-family: Manrope;
   font-size: 16px;
   line-height: 1.5;
   position: relative;
   white-space: pre-wrap;
+  color: #333;
 }
 .typed-content::after {
   content: "";
   display: inline-block;
   width: 8px;
   height: 1.2em;
-  background: #fff;
+  background: #333;
   margin-left: 4px;
   vertical-align: bottom;
   animation: blink-caret 0.8s infinite;
@@ -427,35 +447,38 @@ body::before {
   font-size: 16px;
   text-align: center;
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.9);
-
-  /* Keep it glassy with a blackish backdrop + blur */
-  background: rgba(26, 26, 26, 0.4);
+  cursor: pointer;
+  
+  /* Light glass with blur */
+  background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  
+  border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: var(--corner-radius);
-  cursor: pointer;
+  color: #333;
   transition: all 0.3s ease;
+
+  /* Neumorphic outer shadow */
   box-shadow:
     -4px -4px 8px var(--shadow-light),
     4px 4px 8px var(--shadow-dark);
 }
 
-/* Hover: slightly raised */
+/* Hover: slightly raised, color shift */
 .translucent-button:hover {
-  background: rgba(225, 234, 205, 0.3);
-  color: #000;
+  background: rgba(111, 108, 222, 0.3); /* tinted with accent */
+  color: #333;
   box-shadow:
     -2px -2px 4px var(--shadow-light),
     2px 2px 4px var(--shadow-dark);
   border-color: var(--accent-color);
 }
 
-/* Click (Active) Effect: Pressed in */
+/* Active: Pressed in */
 .translucent-button:active {
   background: var(--accent-color);
-  color: #000;
+  color: #fff;
   box-shadow:
     inset -3px -3px 6px var(--shadow-light),
     inset 3px 3px 6px var(--shadow-dark);
@@ -470,7 +493,7 @@ body::before {
   left: 50%;
   width: 200px;
   height: 200px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent 70%);
+  background: radial-gradient(circle, rgba(111, 108, 222, 0.2), transparent 70%);
   border-radius: 50%;
   transform: translate(-50%, -50%) scale(0);
   opacity: 0;
@@ -481,6 +504,25 @@ body::before {
 .translucent-button:hover::before {
   transform: translate(-50%, -50%) scale(1);
   opacity: 0.5;
+}
+/* === OVERRIDE SNIPPET FOR MARBLE BACKGROUND === */
+body {
+  /* Remove the original black/white gradient */
+  background: none !important; 
+  
+  /* Add your marble image as the main background */
+  background-image: url("bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed; /* optional, for a parallax-like effect */
+}
+
+body::before {
+  /* Adjust the overlay color and blur to suit a light marble look */
+  background: rgba(255, 255, 255, 0.4) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
 }
 
   </style>
