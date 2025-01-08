@@ -21,420 +21,468 @@
        (Glassmorphism, Layout)
        ========================== -->
   <style>
-    /* =======================================
-       1. GLOBAL VARIABLES & BASE STYLING
-       ======================================= */
-    :root {
-      --accent-color: #e1eacd; 
-      --blur-value: 12px;
-    }
+/*****************************************
+  1. GLOBAL VARIABLES & BASE STYLING
+******************************************/
+:root {
+  --accent-color: #e1eacd;   /* same highlight color */
+  --blur-value: 12px;        /* keep original blur */
+  
+  /* For Neumorphic-like shadows on a dark backdrop */
+  --shadow-dark: rgba(0, 0, 0, 0.5);
+  --shadow-light: rgba(255, 255, 255, 0.07);
+  --corner-radius: 16px;
+}
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: linear-gradient(135deg, #111, #000);
-      position: relative;
-      overflow: auto;
-      color: #fff;
-      font-family: Manrope, system-ui, -apple-system, sans-serif;
-    }
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  /* Keep the original black gradient background */
+  background: linear-gradient(135deg, #111, #000);
+  position: relative;
+  overflow: auto;
+  color: #fff;
+  font-family: Manrope, system-ui, -apple-system, sans-serif;
+}
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(var(--blur-value));
-      -webkit-backdrop-filter: blur(var(--blur-value));
-      z-index: -1;
-    }
+/* Dark overlay + blur behind all content (original glass effect) */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);  /* same black overlay */
+  backdrop-filter: blur(var(--blur-value));
+  -webkit-backdrop-filter: blur(var(--blur-value));
+  z-index: -1;
+}
 
-    /* ================================
-       2. HEADER (GLASSMORPHISM)
-       ================================ */
-    .header-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 60px;
-      z-index: 9999;
-      background: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(var(--blur-value));
-      -webkit-backdrop-filter: blur(var(--blur-value));
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+/*****************************************
+  2. HEADER BAR (Glass + Subtle Neumorph)
+******************************************/
+.header-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  z-index: 9999;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 0 16px;
-      box-sizing: border-box;
-    }
-    .header-bar h2 {
-      font-family: Poppins;
-      margin: 0;
-    }
-    .header-bar p {
-      margin: 0;
-    }
+  /* Keep the glass background */
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(var(--blur-value));
+  -webkit-backdrop-filter: blur(var(--blur-value));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
-    /* =========================================
-       3. MAIN CONTAINER & FLEX LAYOUT
-       ========================================= */
-    .main-container {
-      position: absolute;
-      top: 60px;
-      left: 0;
-      width: 100%;
-      height: calc(100% - 60px);
-      display: flex;
-      overflow: hidden;
-    }
+  /* Add a subtle outer "Neumorph" style shadow */
+  box-shadow:
+    -4px -4px 8px var(--shadow-light),
+    4px 4px 8px var(--shadow-dark);
 
-    /* ================
-       3a) LEFT-VIEW
-       ================ */
-    .left-view {
-      width: 64%;
-      box-sizing: border-box;
-      background: rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(var(--blur-value));
-      -webkit-backdrop-filter: blur(var(--blur-value));
-      border-right: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+.header-bar h2 {
+  font-family: Poppins, sans-serif;
+  margin: 0;
+}
+.header-bar p {
+  margin: 0;
+}
 
-      padding: 40px;
-      overflow-y: auto;
-      overflow-x: auto;
+/*****************************************
+  3. MAIN CONTAINER & FLEX LAYOUT
+******************************************/
+.main-container {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 60px);
+  display: flex;
+  overflow: hidden;
+}
 
-      /* CUSTOM SCROLLBAR (Firefox and WebKit) */
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-    }
-    .left-view::-webkit-scrollbar {
-      width: 8px;
-    }
-    .left-view::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    .left-view::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 4px;
-    }
-    .left-view::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
+/* ================ 3a) LEFT-VIEW ================ */
+.left-view {
+  width: 64%;
+  box-sizing: border-box;
+  /* Keep the glass look */
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(var(--blur-value));
+  -webkit-backdrop-filter: blur(var(--blur-value));
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
 
-    /* ================
-       3b) RIGHT-VIEW
-       ================ */
-    .right-view {
-      width: 36%;
-      box-sizing: border-box;
-      background: rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(var(--blur-value));
-      -webkit-backdrop-filter: blur(var(--blur-value));
-      border-left: 1px solid rgba(255, 255, 255, 0.1);
+  /* Add subtle outer shadows for a “raised panel” feel */
+  box-shadow:
+    inset -2px -2px 4px rgba(255, 255, 255, 0.05),
+    inset 2px 2px 4px rgba(0, 0, 0, 0.4);
 
-      padding: 20px;
-      color: #ddd;
-      overflow-y: auto;
-      overflow-x: auto;
+  padding: 40px;
+  overflow-y: auto;
+  overflow-x: auto;
 
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-    }
-    .right-view::-webkit-scrollbar {
-      width: 8px;
-    }
-    .right-view::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    .right-view::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 4px;
-    }
-    .right-view::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
-    .right-view p {
-      font-family: Manrope;
-      font-size: 16px;
-      line-height: 1.5;
-    }
-    .right-view h2 {
-      font-family: Poppins;
-      font-size: 32px;
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-    }
+  /* Keep scrollbar styles */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+.left-view::-webkit-scrollbar {
+  width: 8px;
+}
+.left-view::-webkit-scrollbar-track {
+  background: transparent;
+}
+.left-view::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+.left-view::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
 
-    /* ================================
-       4. NEWS GRID & TILES
-       ================================ */
-    .news-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: flex-start;
-    }
+/* ================ 3b) RIGHT-VIEW ================ */
+.right-view {
+  width: 36%;
+  box-sizing: border-box;
+  /* Keep the glass look */
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(var(--blur-value));
+  -webkit-backdrop-filter: blur(var(--blur-value));
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
 
-    .news-tile {
-      position: relative;
-      box-sizing: border-box;
-      width: calc((100% - (2 * 30px)) / 3);
-      aspect-ratio: 1 / 1;
-      display: flex;
-      flex-direction: column;
-      cursor: pointer;
-      overflow: hidden;
-      background: rgba(26, 26, 26, 0.4);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* Subtle inset for “panel” effect */
+  box-shadow:
+    inset -2px -2px 4px rgba(255, 255, 255, 0.05),
+    inset 2px 2px 4px rgba(0, 0, 0, 0.4);
 
-      transition: all 0.3s ease;
-      --mouse-x: 50%;
-      --mouse-y: 50%;
-      font-size: clamp(0.6rem, 1vw, 1rem);
-      color: #fff;
-      padding: 24px;
-    }
+  padding: 20px;
+  color: #ddd;
+  overflow-y: auto;
+  overflow-x: auto;
 
-    .news-tile::before {
-      content: "";
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      top: var(--mouse-y);
-      left: var(--mouse-x);
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(225, 234, 205, 0.3), transparent 70%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: 1;
-    }
-    .news-tile:hover::before {
-      opacity: 0.3;
-    }
+  /* Keep scrollbar styles */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+.right-view::-webkit-scrollbar {
+  width: 8px;
+}
+.right-view::-webkit-scrollbar-track {
+  background: transparent;
+}
+.right-view::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+.right-view::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+.right-view p {
+  font-family: Manrope;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.right-view h2 {
+  font-family: Poppins;
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
 
-    .news-tile.active {
-      background-color: var(--accent-color);
-      color: #000;
-      filter: none;
-      transition: background-color 0.4s ease, color 0.4s ease;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-color: var(--accent-color);
-    }
-    .news-tile.active .content,
-    .news-tile.active .star-icon,
-    .news-tile.active .font-pair,
-    .news-tile.active .headline {
-      color: #000;
-    }
+/*****************************************
+  4. NEWS GRID & TILES (Glassy + Soft Shadows)
+******************************************/
+.news-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-start;
+}
 
-    .news-tile .font-pair {
-      font-size: 16px;
-      margin-bottom: 16px;
-      color: rgba(255, 255, 255, 0.6);
-      z-index: 2;
-    }
-    .news-tile .star-icon {
-      position: absolute;
-      top: 24px;
-      right: 24px;
-      color: rgba(255, 255, 255, 0.4);
-      z-index: 2;
-    }
-    .news-tile .headline {
-      font-family: Poppins, sans-serif;
-      font-weight: normal;
-      letter-spacing: -0.03em;
-      margin-bottom: 8px;
-      line-height: 1.1;
-      font-size: 2em;
-      z-index: 2;
-    }
+.news-tile {
+  position: relative;
+  box-sizing: border-box;
+  width: calc((100% - (2 * 30px)) / 3);
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  overflow: hidden;
 
-    .news-tile .content {
-      position: relative;
-      z-index: 2;
-      font-family: Manrope, sans-serif;
-      font-size: 16px;
-      line-height: 1.5;
-      color: rgba(255, 255, 255, 0.9);
-      flex: 1;
-      overflow: hidden;
-    }
+  /* Keep your glass background & blur, but add Neumorph shadows */
+  background: rgba(26, 26, 26, 0.4);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--corner-radius);
 
-    .news-tile .content::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: transparent;
-      pointer-events: none;
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-      -webkit-mask-image: linear-gradient(
-        to bottom,
-        transparent 0%,
-        rgba(0, 0, 0, 0.8) 20%,
-        black 50%
-      );
-      mask-image: linear-gradient(
-        to bottom,
-        transparent 0%,
-        rgba(0, 0, 0, 0.8) 20%,
-        black 50%
-      );
-    }
-    .news-tile .content {
-      -webkit-mask-image: linear-gradient(
-        to bottom,
-        black 10%,
-        transparent 100%
-      );
-      mask-image: linear-gradient(
-        to bottom,
-        black 10%,
-        transparent 100%
-      );
-    }
+  /* Neumorphic shadows: subtle outer + a bit heavier */
+  box-shadow:
+    -6px -6px 10px var(--shadow-light),
+    6px 6px 10px var(--shadow-dark);
 
-    /* ============================================
-       5. RESPONSIVE ADJUSTMENTS
-       ============================================ */
-    @media (max-width: 1400px) {
-      .main-container {
-        flex-direction: column;
-        height: auto;
-      }
-      .left-view,
-      .right-view {
-        width: 100%;
-        height: auto;
-        border-right: none;
-        border-left: none;
-      }
-      .news-tile {
-        width: calc((100% - 24px) / 2);
-      }
-    }
+  transition: all 0.3s ease;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  font-size: clamp(0.6rem, 1vw, 1rem);
+  color: #fff;
+  padding: 24px;
+}
 
-    @media (max-width: 480px) {
-      .news-tile {
-        width: 100%;
-      }
-    }
+/* Light radial highlight on hover (kept from original) */
+.news-tile::before {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  top: var(--mouse-y);
+  left: var(--mouse-x);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(225, 234, 205, 0.3), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+.news-tile:hover::before {
+  opacity: 0.3;
+}
 
-    /* A blinking cursor, used for typed text if needed */
-    .typed-content {
-      font-family: Manrope;
-      font-size: 16px;
-      line-height: 1.5;
-      position: relative;
-      white-space: pre-wrap;
-    }
-    .typed-content::after {
-      content: "";
-      display: inline-block;
-      width: 8px;
-      height: 1.2em;
-      background: #fff;
-      margin-left: 4px;
-      vertical-align: bottom;
-      animation: blink-caret 0.8s infinite;
-    }
-    @keyframes blink-caret {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
+/* “Pressed in” effect on active state */
+.news-tile.active,
+.news-tile:active {
+  box-shadow:
+    inset -4px -4px 8px var(--shadow-light),
+    inset 4px 4px 8px var(--shadow-dark);
+  background-color: var(--accent-color);
+  color: #000;
+  border-color: var(--accent-color);
+}
 
-    /* Overlay that covers right-view at first */
-    .blur-reveal-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(26, 26, 26, 0.4);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      pointer-events: none;
-      z-index: 99;
-      animation: blurRevealSlide 1.2s ease-in-out forwards;
-    }
-    @keyframes blurRevealSlide {
-      0% { opacity: 1; }
-      100% { opacity: 0; }
-    }
-	    /* Translucent Button Styles */
-  /* Translucent Button Styles */
-  .translucent-button {
-    position: relative;
-    display: inline-block;
-    padding: 10px 20px;
-    font-family: Poppins, sans-serif;
-    font-weight: bold;
-    font-size: 16px;
-    text-align: center;
-    text-decoration: none; /* Remove underline */
-    color: rgba(255, 255, 255, 0.9);
-    background: rgba(26, 26, 26, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+/* Children color when active */
+.news-tile.active .content,
+.news-tile.active .star-icon,
+.news-tile.active .font-pair,
+.news-tile.active .headline {
+  color: #000;
+}
+
+/* Tile text specifics */
+.news-tile .font-pair {
+  font-size: 16px;
+  margin-bottom: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  z-index: 2;
+}
+.news-tile .star-icon {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  color: rgba(255, 255, 255, 0.4);
+  z-index: 2;
+}
+.news-tile .headline {
+  font-family: Poppins, sans-serif;
+  font-weight: normal;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+  line-height: 1.1;
+  font-size: 2em;
+  z-index: 2;
+}
+.news-tile .content {
+  position: relative;
+  z-index: 2;
+  font-family: Manrope, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+  flex: 1;
+  overflow: hidden;
+}
+
+/* The partial text mask from original code */
+.news-tile .content::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  pointer-events: none;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.8) 20%,
+    black 50%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.8) 20%,
+    black 50%
+  );
+}
+.news-tile .content {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black 10%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    black 10%,
+    transparent 100%
+  );
+}
+
+/*****************************************
+  5. RESPONSIVE ADJUSTMENTS
+******************************************/
+@media (max-width: 1400px) {
+  .main-container {
+    flex-direction: column;
+    height: auto;
   }
-
-  /* Hover Effect */
-  .translucent-button:hover {
-    background: rgba(225, 234, 205, 0.3);
-    color: #000;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-    border-color: var(--accent-color);
+  .left-view,
+  .right-view {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-left: none;
   }
-
-  /* Click (Active) Effect */
-  .translucent-button:active {
-    background: var(--accent-color);
-    color: #000;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-    transform: scale(0.95);
+  .news-tile {
+    width: calc((100% - 24px) / 2);
   }
+}
 
-  /* Optional Glow Effect */
-  .translucent-button::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent 70%);
-    border-radius: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    pointer-events: none;
-    z-index: -1;
+@media (max-width: 480px) {
+  .news-tile {
+    width: 100%;
   }
+}
 
-  .translucent-button:hover::before {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.5;
-  }
+/*****************************************
+  6. EXTRAS: BLUR REVEAL OVERLAY, ETC.
+******************************************/
+.blur-reveal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(26, 26, 26, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  pointer-events: none;
+  z-index: 99;
+  animation: blurRevealSlide 1.2s ease-in-out forwards;
+}
+@keyframes blurRevealSlide {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Typed text cursor (optional) */
+.typed-content {
+  font-family: Manrope;
+  font-size: 16px;
+  line-height: 1.5;
+  position: relative;
+  white-space: pre-wrap;
+}
+.typed-content::after {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 1.2em;
+  background: #fff;
+  margin-left: 4px;
+  vertical-align: bottom;
+  animation: blink-caret 0.8s infinite;
+}
+@keyframes blink-caret {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/*****************************************
+  7. NEUMORPHIC BUTTON (OPTIONAL)
+******************************************/
+.translucent-button {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  font-family: Poppins, sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.9);
+
+  /* Keep it glassy with a blackish backdrop + blur */
+  background: rgba(26, 26, 26, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--corner-radius);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow:
+    -4px -4px 8px var(--shadow-light),
+    4px 4px 8px var(--shadow-dark);
+}
+
+/* Hover: slightly raised */
+.translucent-button:hover {
+  background: rgba(225, 234, 205, 0.3);
+  color: #000;
+  box-shadow:
+    -2px -2px 4px var(--shadow-light),
+    2px 2px 4px var(--shadow-dark);
+  border-color: var(--accent-color);
+}
+
+/* Click (Active) Effect: Pressed in */
+.translucent-button:active {
+  background: var(--accent-color);
+  color: #000;
+  box-shadow:
+    inset -3px -3px 6px var(--shadow-light),
+    inset 3px 3px 6px var(--shadow-dark);
+  transform: scale(0.95);
+}
+
+/* Optional radial glow on hover */
+.translucent-button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+.translucent-button:hover::before {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 0.5;
+}
+
   </style>
 
   <!-- ==========================
